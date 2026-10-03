@@ -1,0 +1,897 @@
+/**
+ * Sistem Informasi Klinik - styles.css
+ * Modern, Clean, Minimalist, Healthcare Administration Design System
+ * 
+ * Palette:
+ * Primary: #198754
+ * Dark green: #146C43
+ * Light green: #EAF7EF
+ * Background: #F7F9F8
+ * White: #FFFFFF
+ * Text: #212529
+ * Secondary text: #6C757D
+ */
+
+:root {
+  --primary-color: #198754;
+  --dark-green: #146C43;
+  --light-green: #EAF7EF;
+  --light-green-hover: #def3e6;
+  --bg-color: #F7F9F8;
+  --white: #FFFFFF;
+  --text-main: #212529;
+  --text-secondary: #6C757D;
+  --border-color: #E2E8F0;
+  --border-light: #EDF2F7;
+  
+  --sidebar-width: 260px;
+  --topbar-height: 68px;
+  
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   Base & Typography
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  font-size: 0.925rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--dark-green);
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+/* Custom Primary Utilities */
+.text-primary-clinic {
+  color: var(--primary-color) !important;
+}
+
+.bg-primary-clinic {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+.bg-light-clinic {
+  background-color: var(--light-green) !important;
+}
+
+/* ==========================================================================
+   Buttons & Inputs
+   ========================================================================== */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--dark-green);
+  border-color: var(--dark-green);
+  color: #ffffff;
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.btn-light-clinic {
+  background-color: var(--light-green);
+  color: var(--dark-green);
+  border: 1px solid rgba(25, 135, 84, 0.2);
+  font-weight: 500;
+}
+
+.btn-light-clinic:hover {
+  background-color: var(--light-green-hover);
+  color: var(--dark-green);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
+}
+
+/* ==========================================================================
+   App Layout: Sidebar, Topbar, Main Content
+   ========================================================================== */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+/* Sidebar */
+.app-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--white);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1020;
+  transition: transform 0.25s ease;
+}
+
+.sidebar-header {
+  height: var(--topbar-height);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-logo-icon {
+  width: 38px;
+  height: 38px;
+  background-color: var(--light-green);
+  color: var(--primary-color);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.sidebar-brand-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark-green);
+  line-height: 1.2;
+}
+
+.sidebar-brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.sidebar-menu {
+  flex: 1;
+  padding: 1.25rem 0.75rem;
+  overflow-y: auto;
+}
+
+.sidebar-nav-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  padding: 0.5rem 0.75rem 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  color: #495057;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.25rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-nav-item i {
+  font-size: 1.15rem;
+  width: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  transition: color 0.15s ease;
+}
+
+.sidebar-nav-item:hover {
+  background-color: #F8FAF9;
+  color: var(--dark-green);
+}
+
+.sidebar-nav-item:hover i {
+  color: var(--primary-color);
+}
+
+/* Active menu with green highlight */
+.sidebar-nav-item.active {
+  background-color: var(--light-green);
+  color: var(--dark-green);
+  font-weight: 600;
+  border-left-color: var(--primary-color);
+}
+
+.sidebar-nav-item.active i {
+  color: var(--primary-color);
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Main Content Area */
+.app-main {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--bg-color);
+}
+
+/* Topbar */
+.app-topbar {
+  height: var(--topbar-height);
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1010;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topbar-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.topbar-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar-page-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.topbar-breadcrumb {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+/* Role Selector Pills */
+.role-selector-group {
+  display: inline-flex;
+  background-color: #F1F4F2;
+  padding: 3px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.role-pill-btn {
+  border: none;
+  background: transparent;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.role-pill-btn.active {
+  background-color: var(--white);
+  color: var(--dark-green);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+
+/* Notification & User Profile */
+.topbar-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.topbar-icon-btn:hover {
+  background-color: #F8FAF9;
+  color: var(--text-main);
+}
+
+.topbar-badge-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  background-color: #DC3545;
+  border-radius: 50%;
+  border: 2px solid var(--white);
+}
+
+.user-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: none;
+  border: none;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+}
+
+.user-profile-btn:hover {
+  background-color: #F8FAF9;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--light-green);
+  color: var(--dark-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid rgba(25, 135, 84, 0.2);
+}
+
+.user-info-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.user-info-role {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  letter-spacing: 0.03em;
+}
+
+/* Main Content Body */
+.app-content {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+/* ==========================================================================
+   Cards & Stats
+   ========================================================================== */
+.card-clean {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-subtle);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.card-clean-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white);
+}
+
+.card-clean-header h5, .card-clean-header h6 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.card-clean-body {
+  padding: 1.25rem;
+}
+
+/* Stat Cards */
+.stat-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  height: 100%;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.1;
+}
+
+.stat-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.stat-icon-green {
+  background-color: var(--light-green);
+  color: var(--primary-color);
+}
+
+.stat-icon-blue {
+  background-color: #EBF8FF;
+  color: #3182CE;
+}
+
+.stat-icon-amber {
+  background-color: #FEFCBF;
+  color: #D69E2E;
+}
+
+.stat-icon-purple {
+  background-color: #FAF5FF;
+  color: #805AD5;
+}
+
+/* ==========================================================================
+   Tables & Badges
+   ========================================================================== */
+.table-clean {
+  width: 100%;
+  margin-bottom: 0;
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.table-clean th {
+  background-color: #F8FAFC;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.table-clean td {
+  padding: 0.85rem 1rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.table-clean tbody tr:hover {
+  background-color: #F8FAF9;
+}
+
+/* Status Badges */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 20px;
+}
+
+.badge-status-selesai {
+  background-color: var(--light-green);
+  color: var(--dark-green);
+  border: 1px solid rgba(25, 135, 84, 0.2);
+}
+
+.badge-status-menunggu {
+  background-color: #FFFBEB;
+  color: #B45309;
+  border: 1px solid rgba(180, 83, 9, 0.2);
+}
+
+.badge-status-diperiksa {
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid rgba(29, 78, 216, 0.2);
+}
+
+.badge-status-batal {
+  background-color: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid rgba(185, 28, 28, 0.2);
+}
+
+/* ==========================================================================
+   Recommendation Box (Dynamic Clinical Guidance)
+   ========================================================================== */
+.recommendation-box {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-top: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-subtle);
+  transition: all 0.2s ease;
+}
+
+.recommendation-box.active-state-box {
+  border-color: rgba(25, 135, 84, 0.4);
+  box-shadow: 0 2px 8px rgba(25, 135, 84, 0.08);
+}
+
+.recommendation-header {
+  padding: 0.75rem 1rem;
+  background-color: #F8FAFC;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.recommendation-body {
+  padding: 1rem;
+}
+
+.recommendation-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.recommendation-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.4rem 0;
+  font-size: 0.875rem;
+  color: var(--text-main);
+  border-bottom: 1px dashed var(--border-light);
+}
+
+.recommendation-item:last-child {
+  border-bottom: none;
+}
+
+.recommendation-footer {
+  padding: 0.5rem 1rem;
+  background-color: #F8FAF9;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.73rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+/* Symptom Quick Chips */
+.quick-chip {
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 14px;
+  background-color: #F1F5F9;
+  color: #475569;
+  border: 1px solid #CBD5E1;
+  transition: all 0.15s ease;
+}
+
+.quick-chip:hover {
+  background-color: var(--light-green);
+  color: var(--dark-green);
+  border-color: var(--primary-color);
+}
+
+/* ==========================================================================
+   Login Page Styling
+   ========================================================================== */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  padding: 1.5rem;
+}
+
+.login-card-wrapper {
+  width: 100%;
+  max-width: 960px;
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.login-left-brand {
+  background-color: var(--dark-green);
+  background-image: linear-gradient(145deg, #146C43 0%, #0d4a2d 100%);
+  color: var(--white);
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login-brand-badge {
+  width: 52px;
+  height: 52px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
+}
+
+.login-clinic-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.login-clinic-subtitle {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.login-clinic-desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+.login-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.login-features-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.login-right-form {
+  padding: 3rem 2.5rem;
+  background-color: var(--white);
+}
+
+.login-form-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+
+.login-form-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.75rem;
+}
+
+/* ==========================================================================
+   Empty States & Error States
+   ========================================================================== */
+.empty-state-card {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #F1F5F9;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+
+.empty-state-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  max-width: 380px;
+  margin: 0 auto 1.25rem;
+}
+
+/* ==========================================================================
+   Toast Customization
+   ========================================================================== */
+.toast-container-custom {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1090;
+}
+
+.toast-clinic {
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--border-color);
+  min-width: 300px;
+}
+
+/* ==========================================================================
+   Responsive Adaptations (Desktop, Tablet, Mobile)
+   ========================================================================== */
+/* Tablet */
+@media (max-width: 991.98px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .app-sidebar.show {
+    transform: translateX(0);
+  }
+
+  .app-main {
+    margin-left: 0;
+  }
+
+  .topbar-toggle-btn {
+    display: block;
+  }
+
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1015;
+  }
+
+  .sidebar-backdrop.show {
+    display: block;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767.98px) {
+  .app-topbar {
+    padding: 0 1rem;
+  }
+
+  .app-content {
+    padding: 1rem;
+  }
+
+  .login-card-wrapper {
+    box-shadow: none;
+    border: none;
+  }
+
+  .login-left-brand {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-right-form {
+    padding: 2rem 1.5rem;
+  }
+
+  .role-selector-group {
+    display: none; /* Mobile can use dropdown in topbar or hamburger */
+  }
+}

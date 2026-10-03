@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Use Case Diagram - Sistem Informasi Klinik</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f9ff 0%, #edf7ef 100%);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #1f2937;
+    }
+    .page-wrap {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+    .card {
+      border: none;
+      border-radius: 18px;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+      background: #ffffff;
+    }
+    .card-header {
+      border-bottom: 1px solid #e5e7eb;
+      background: #f8fafc;
+      border-radius: 18px 18px 0 0 !important;
+      padding: 18px 24px;
+    }
+    .card-body {
+      padding: 24px;
+    }
+    .mermaid {
+      background: #ffffff;
+      min-height: 640px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .legend-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #f8fafc;
+    }
+    .legend-item strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+    .legend-item ul {
+      padding-left: 18px;
+      margin: 0;
+      color: #374151;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div>
+            <div class="text-primary fw-bold small text-uppercase">Sistem Informasi Klinik</div>
+            <h2 class="mb-0 fw-bold">Use Case Diagram</h2>
+          </div>
+          <a href="index.html" class="btn btn-outline-primary">
+            <i class="bi bi-house-door me-1"></i> Kembali ke Dashboard
+          </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="mermaid">
+          flowchart LR
+            subgraph Aktor["Aktor"]
+              Owner["Owner"]
+              Resepsionis["Resepsionis"]
+              Perawat["Perawat"]
+            end
+
+            subgraph Sistem["Sistem Informasi Klinik"]
+              U1["Login"]
+              U2["Melihat dashboard"]
+              U3["Melihat data pasien"]
+              U4["Melihat data kunjungan"]
+              U5["Melihat laporan"]
+              U6["Kelola pengguna"]
+
+              U7["Kelola data pasien"]
+              U8["Mendaftarkan kunjungan"]
+              U9["Mengelola antrean"]
+              U10["Melihat riwayat pasien"]
+
+              U11["Melihat antrean"]
+              U12["Menginput pemeriksaan"]
+              U13["Melihat riwayat pemeriksaan"]
+            end
+
+            Owner --> U1
+            Owner --> U2
+            Owner --> U3
+            Owner --> U4
+            Owner --> U5
+            Owner --> U6
+
+            Resepsionis --> U1
+            Resepsionis --> U7
+            Resepsionis --> U8
+            Resepsionis --> U9
+            Resepsionis --> U10
+
+            Perawat --> U1
+            Perawat --> U11
+            Perawat --> U3
+            Perawat --> U12
+            Perawat --> U13
+        </div>
+
+        <div class="legend">
+          <div class="legend-item">
+            <strong>Owner</strong>
+            <ul>
+              <li>Login</li>
+              <li>Melihat dashboard</li>
+              <li>Melihat data pasien</li>
+              <li>Melihat data kunjungan</li>
+              <li>Melihat laporan</li>
+              <li>Kelola pengguna</li>
+            </ul>
+          </div>
+
+          <div class="legend-item">
+            <strong>Resepsionis</strong>
+            <ul>
+              <li>Login</li>
+              <li>Kelola data pasien</li>
+              <li>Mendaftarkan kunjungan</li>
+              <li>Mengelola antrean</li>
+              <li>Melihat riwayat pasien</li>
+            </ul>
+          </div>
+
+          <div class="legend-item">
+            <strong>Perawat</strong>
+            <ul>
+              <li>Login</li>
+              <li>Melihat antrean</li>
+              <li>Melihat data pasien</li>
+              <li>Menginput pemeriksaan</li>
+              <li>Melihat riwayat pemeriksaan</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis'
+      }
+    });
+  </script>
+</body>
+</html>

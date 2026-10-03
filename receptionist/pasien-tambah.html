@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tambah Pasien - Resepsionis</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../assets/css/clinic.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    
+    <!-- SIDEBAR (RESEPSIONIS) -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="bi bi-hospital"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <div class="sidebar-brand-name">KLINIK SEHAT MEDIKA</div>
+          <div class="sidebar-brand-subtitle">Sistem Informasi Klinik</div>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="sidebar-section-title">Menu Resepsionis</div>
+        
+        <a href="dashboard.html" class="sidebar-nav-item">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="pasien.html" class="sidebar-nav-item active">
+          <i class="bi bi-people"></i>
+          <span>Data Pasien</span>
+        </a>
+        <a href="pendaftaran.html" class="sidebar-nav-item">
+          <i class="bi bi-person-plus"></i>
+          <span>Pendaftaran</span>
+        </a>
+        <a href="antrean.html" class="sidebar-nav-item">
+          <i class="bi bi-list-ol"></i>
+          <span>Antrean</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <button type="button" class="btn btn-logout" onclick="Auth.logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTAINER -->
+    <div class="app-main">
+      
+      <!-- TOPBAR -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button type="button" class="sidebar-toggle-btn js-sidebar-toggle d-lg-none">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="page-breadcrumb-wrap">
+            <h1 class="page-main-title" id="pageTitleHeading">Tambah Pasien</h1>
+            <p class="breadcrumb-sub"><a href="pasien.html" class="text-decoration-none text-muted">Data Pasien</a> / Formulir Pasien Baru</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="role-badge-switch d-none d-md-flex">
+            <button class="role-badge-btn" onclick="Auth.loginAsRole('OWNER')">Owner</button>
+            <button class="role-badge-btn active" onclick="Auth.loginAsRole('RESEPSIONIS')">Resepsionis</button>
+            <button class="role-badge-btn" onclick="Auth.loginAsRole('PERAWAT')">Perawat</button>
+          </div>
+
+          <div class="dropdown">
+            <button class="user-profile-btn" type="button" data-bs-toggle="dropdown">
+              <div class="user-avatar js-user-avatar">SR</div>
+              <div class="user-info-text d-none d-sm-block">
+                <div class="user-name js-user-name">Siti Rahma</div>
+                <div class="user-role-badge">RESEPSIONIS <i class="bi bi-chevron-down ms-1 small"></i></div>
+              </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border">
+              <li><button class="dropdown-item text-danger" onclick="Auth.logout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</button></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <main class="app-content">
+
+        <div class="row justify-content-center">
+          <div class="col-12 col-xl-10">
+            
+            <form id="formTambahPasien" novalidate>
+              
+              <!-- SECTION 1: Identitas Pasien -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-person-lines-fill text-success"></i>
+                    <span>Identitas Pasien</span>
+                  </div>
+                  <span class="small text-muted"><span class="text-danger">*</span> Wajib diisi</span>
+                </div>
+                
+                <div class="card-body">
+                  <div class="row g-3">
+                    
+                    <!-- Nama Lengkap -->
+                    <div class="col-12 col-md-6">
+                      <label for="namaLengkap" class="form-label">Nama Lengkap <span class="required-indicator">*</span></label>
+                      <input type="text" class="form-control" id="namaLengkap" placeholder="Nama lengkap pasien" required>
+                      <div class="invalid-feedback">Silakan masukkan nama lengkap pasien.</div>
+                    </div>
+
+                    <!-- Tempat Lahir -->
+                    <div class="col-12 col-md-4">
+                      <label for="tempatLahir" class="form-label">Tempat Lahir <span class="required-indicator">*</span></label>
+                      <input type="text" class="form-control" id="tempatLahir" placeholder="Kota lahir" required>
+                      <div class="invalid-feedback">Tempat lahir wajib diisi.</div>
+                    </div>
+
+                    <!-- Tanggal Lahir -->
+                    <div class="col-12 col-md-4">
+                      <label for="tanggalLahir" class="form-label">Tanggal Lahir <span class="required-indicator">*</span></label>
+                      <input type="date" class="form-control" id="tanggalLahir" required>
+                      <div class="invalid-feedback">Tanggal lahir wajib dipilih.</div>
+                    </div>
+
+                    <!-- Jenis Kelamin -->
+                    <div class="col-12 col-md-4">
+                      <label for="jenisKelamin" class="form-label">Jenis Kelamin <span class="required-indicator">*</span></label>
+                      <select class="form-select" id="jenisKelamin" required>
+                        <option value="" disabled selected>Pilih jenis kelamin</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                      </select>
+                      <div class="invalid-feedback">Silakan pilih jenis kelamin.</div>
+                    </div>
+
+                    <!-- No. Telepon -->
+                    <div class="col-12 col-md-6">
+                      <label for="noTelepon" class="form-label">No. Telepon <span class="required-indicator">*</span></label>
+                      <input type="tel" class="form-control" id="noTelepon" placeholder="Contoh: 08123456789" required>
+                      <div class="invalid-feedback">Nomor telepon wajib diisi.</div>
+                    </div>
+
+                    <!-- Alamat -->
+                    <div class="col-12 col-md-6">
+                      <label for="alamatLengkap" class="form-label">Alamat <span class="required-indicator">*</span></label>
+                      <textarea class="form-control" id="alamatLengkap" rows="2" placeholder="Alamat domisili" required></textarea>
+                      <div class="invalid-feedback">Alamat pasien wajib diisi.</div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 2: Data Tambahan -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-shield-plus text-success"></i>
+                    <span>Data Tambahan</span>
+                  </div>
+                </div>
+                
+                <div class="card-body">
+                  <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                      <label for="kontakDarurat" class="form-label">Kontak Darurat</label>
+                      <input type="text" class="form-control" id="kontakDarurat" placeholder="Nama wali/kerabat">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <label for="noKontakDarurat" class="form-label">Nomor Kontak Darurat</label>
+                      <input type="tel" class="form-control" id="noKontakDarurat" placeholder="Nomor kontak darurat">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Buttons -->
+              <div class="d-flex align-items-center justify-content-end gap-3 mb-5">
+                <a href="pasien.html" class="btn btn-outline-secondary px-4">Batal</a>
+                <button type="submit" class="btn btn-primary px-4 fw-semibold">
+                  <i class="bi bi-check2-circle"></i> Simpan Pasien
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/data-store.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/clinic.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.checkAuth(['RESEPSIONIS']);
+
+      const form = document.getElementById('formTambahPasien');
+      const urlParams = new URLSearchParams(window.location.search);
+      const editRm = urlParams.get('edit');
+
+      if (editRm) {
+        document.getElementById('pageTitleHeading').textContent = `Edit Pasien (${editRm})`;
+        const existing = DataStore.getPatientByRm(editRm);
+        if (existing) {
+          document.getElementById('namaLengkap').value = existing.nama || '';
+          document.getElementById('tempatLahir').value = existing.tempatLahir || '';
+          document.getElementById('tanggalLahir').value = existing.tanggalLahir || '';
+          document.getElementById('jenisKelamin').value = existing.jenisKelamin || '';
+          document.getElementById('noTelepon').value = existing.telepon || '';
+          document.getElementById('alamatLengkap').value = existing.alamat || '';
+          document.getElementById('golonganDarah').value = existing.golonganDarah || '';
+          document.getElementById('kontakDarurat').value = existing.kontakDarurat || '';
+          document.getElementById('noKontakDarurat').value = existing.noKontakDarurat || '';
+        }
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.classList.add('was-validated');
+          Clinic.showToast('warning', '! Mohon lengkapi isian wajib.');
+          return;
+        }
+
+        const patientData = {
+          nama: document.getElementById('namaLengkap').value.trim(),
+          tempatLahir: document.getElementById('tempatLahir').value.trim(),
+          tanggalLahir: document.getElementById('tanggalLahir').value,
+          jenisKelamin: document.getElementById('jenisKelamin').value,
+          telepon: document.getElementById('noTelepon').value.trim(),
+          alamat: document.getElementById('alamatLengkap').value.trim(),
+          golonganDarah: document.getElementById('golonganDarah').value,
+          kontakDarurat: document.getElementById('kontakDarurat').value.trim(),
+          noKontakDarurat: document.getElementById('noKontakDarurat').value.trim()
+        };
+
+        if (editRm) {
+          DataStore.updatePatient(editRm, patientData);
+          Clinic.showToast('success', `✓ Data pasien ${patientData.nama} berhasil diperbarui.`);
+        } else {
+          const created = DataStore.addPatient(patientData);
+          Clinic.showToast('success', `✓ Pasien baru ${created.nama} (${created.noRm}) berhasil disimpan.`);
+        }
+
+        setTimeout(() => {
+          window.location.href = 'pasien.html';
+        }, 600);
+      });
+    });
+  </script>
+</body>
+</html>

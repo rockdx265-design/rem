@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Kunjungan - Sistem Informasi Klinik</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../assets/css/clinic.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="bi bi-hospital"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <div class="sidebar-brand-name">KLINIK SEHAT MEDIKA</div>
+          <div class="sidebar-brand-subtitle">Sistem Informasi Klinik</div>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="sidebar-section-title">Menu Utama</div>
+        
+        <a href="dashboard.html" class="sidebar-nav-item">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="pasien.html" class="sidebar-nav-item">
+          <i class="bi bi-people"></i>
+          <span>Data Pasien</span>
+        </a>
+        <a href="kunjungan.html" class="sidebar-nav-item active">
+          <i class="bi bi-clipboard2-pulse"></i>
+          <span>Data Kunjungan</span>
+        </a>
+        <a href="laporan.html" class="sidebar-nav-item">
+          <i class="bi bi-file-earmark-bar-graph"></i>
+          <span>Laporan</span>
+        </a>
+        <a href="pengguna.html" class="sidebar-nav-item">
+          <i class="bi bi-person-gear"></i>
+          <span>Pengguna</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <button type="button" class="btn btn-logout" onclick="Auth.logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTAINER -->
+    <div class="app-main">
+      
+      <!-- TOPBAR -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button type="button" class="sidebar-toggle-btn js-sidebar-toggle d-lg-none" aria-label="Toggle Navigation">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="page-breadcrumb-wrap">
+            <h1 class="page-main-title">Detail Kunjungan</h1>
+            <p class="breadcrumb-sub"><a href="kunjungan.html" class="text-decoration-none text-muted">Data Kunjungan</a> / Rekam Medis Kunjungan</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <a href="kunjungan.html" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Kembali
+          </a>
+          <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
+            <i class="bi bi-printer"></i> Cetak Resume
+          </button>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <main class="app-content">
+
+        <!-- TIMELINE OF STAGES (Section 18) -->
+        <div class="card mb-4">
+          <div class="card-header bg-white">
+            <div class="d-flex align-items-center justify-content-between w-100">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-diagram-3-fill text-success"></i>
+                <span class="fw-bold">Alur Pelayanan Kunjungan Pasien</span>
+              </div>
+              <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 fw-bold" id="badgeStatusKunjungan">
+                Selesai
+              </span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="timeline-stages">
+              
+              <!-- Stage 1: Pendaftaran -->
+              <div class="timeline-stage-item completed">
+                <div class="timeline-node">
+                  <i class="bi bi-clipboard-plus"></i>
+                </div>
+                <div class="timeline-label">Pendaftaran</div>
+                <div class="timeline-time" id="timeDaftar">08:45 WIB</div>
+              </div>
+
+              <!-- Stage 2: Menunggu -->
+              <div class="timeline-stage-item completed">
+                <div class="timeline-node">
+                  <i class="bi bi-clock-history"></i>
+                </div>
+                <div class="timeline-label">Menunggu</div>
+                <div class="timeline-time" id="timeMenunggu">08:50 WIB</div>
+              </div>
+
+              <!-- Stage 3: Diperiksa -->
+              <div class="timeline-stage-item completed">
+                <div class="timeline-node">
+                  <i class="bi bi-heart-pulse"></i>
+                </div>
+                <div class="timeline-label">Diperiksa</div>
+                <div class="timeline-time" id="timeDiperiksa">09:00 WIB</div>
+              </div>
+
+              <!-- Stage 4: Selesai -->
+              <div class="timeline-stage-item completed" id="stageSelesaiNode">
+                <div class="timeline-node">
+                  <i class="bi bi-check-lg"></i>
+                </div>
+                <div class="timeline-label">Selesai</div>
+                <div class="timeline-time" id="timeSelesai">09:20 WIB</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          
+          <!-- LEFT COLUMN: Data Pasien & Data Kunjungan -->
+          <div class="col-12 col-lg-5">
+            
+            <!-- Data Pasien -->
+            <div class="card mb-4">
+              <div class="card-header">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-person-circle text-success"></i>
+                  <span>Data Pasien</span>
+                </div>
+                <code id="kunjunganNoRm">RM0001</code>
+              </div>
+              <div class="card-body">
+                <table class="table table-sm table-borderless mb-0">
+                  <tbody>
+                    <tr>
+                      <td class="text-muted" style="width: 130px;">Nama Lengkap</td>
+                      <td class="fw-bold" id="kunjunganNama">Andi Saputra</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Jenis Kelamin</td>
+                      <td id="kunjunganGender">Laki-laki</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Tgl. Lahir / Usia</td>
+                      <td id="kunjunganTtl">12 Mei 1995 (31 th)</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">No. Telepon</td>
+                      <td id="kunjunganTelepon">081234567890</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Data Kunjungan -->
+            <div class="card mb-0">
+              <div class="card-header">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-calendar2-week text-success"></i>
+                  <span>Data Kunjungan</span>
+                </div>
+                <span class="badge bg-light text-secondary border" id="kunjunganNoAntrean">Antrean: A001</span>
+              </div>
+              <div class="card-body">
+                <table class="table table-sm table-borderless mb-3">
+                  <tbody>
+                    <tr>
+                      <td class="text-muted" style="width: 130px;">ID Kunjungan</td>
+                      <td class="fw-semibold text-primary font-monospace" id="kunjunganId">KNJ-20261003-001</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Tanggal</td>
+                      <td class="fw-semibold" id="kunjunganTanggal">03 Oktober 2026</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Poli / Layanan</td>
+                      <td class="fw-semibold" id="kunjunganPoli">Pemeriksaan Umum</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h6 class="fw-bold small text-muted text-uppercase mb-2">Keluhan Awal Pasien:</h6>
+                <div class="p-3 rounded bg-light border text-dark" id="kunjunganKeluhan">
+                  Demam sejak kemarin malam, suhu tinggi dan sakit kepala.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: Hasil Pemeriksaan, Tanda Vital, Catatan -->
+          <div class="col-12 col-lg-7">
+            
+            <!-- Tanda-Tanda Vital -->
+            <div class="card mb-4">
+              <div class="card-header">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-activity text-success"></i>
+                  <span>Tanda-Tanda Vital</span>
+                </div>
+                <span class="small text-muted">Hasil Pengukuran</span>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  
+                  <div class="col-6 col-md-4">
+                    <div class="vital-sign-card text-center">
+                      <div class="vital-sign-label justify-content-center">
+                        <i class="bi bi-speedometer text-danger"></i> Tekanan Darah
+                      </div>
+                      <div class="fs-4 fw-bold text-dark" id="vitalTensi">120/80</div>
+                      <small class="text-muted">mmHg</small>
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <div class="vital-sign-card text-center">
+                      <div class="vital-sign-label justify-content-center">
+                        <i class="bi bi-thermometer-half text-warning"></i> Suhu Tubuh
+                      </div>
+                      <div class="fs-4 fw-bold text-dark" id="vitalSuhu">38.2</div>
+                      <small class="text-muted">°C</small>
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <div class="vital-sign-card text-center">
+                      <div class="vital-sign-label justify-content-center">
+                        <i class="bi bi-heart-pulse-fill text-danger"></i> Denyut Nadi
+                      </div>
+                      <div class="fs-4 fw-bold text-dark" id="vitalNadi">84</div>
+                      <small class="text-muted">bpm</small>
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-6">
+                    <div class="vital-sign-card text-center">
+                      <div class="vital-sign-label justify-content-center">
+                        <i class="bi bi-person text-primary"></i> Berat Badan
+                      </div>
+                      <div class="fs-4 fw-bold text-dark" id="vitalBerat">68</div>
+                      <small class="text-muted">kg</small>
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-6">
+                    <div class="vital-sign-card text-center">
+                      <div class="vital-sign-label justify-content-center">
+                        <i class="bi bi-arrows-vertical text-info"></i> Tinggi Badan
+                      </div>
+                      <div class="fs-4 fw-bold text-dark" id="vitalTinggi">172</div>
+                      <small class="text-muted">cm</small>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Rekomendasi Tindakan & Catatan Pemeriksaan -->
+            <div class="card mb-0">
+              <div class="card-header">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-journal-medical text-success"></i>
+                  <span>Catatan & Rekomendasi Obat</span>
+                </div>
+              </div>
+              <div class="card-body">
+                
+                <h6 class="fw-bold small text-muted text-uppercase mb-2">Rekomendasi Obat Terpilih:</h6>
+                <ul class="list-group list-group-flush mb-4 small" id="listRekomendasiTindakan">
+                  <li class="list-group-item px-0 py-2 d-flex align-items-center gap-2 text-dark">
+                    <i class="bi bi-check-circle-fill text-success"></i> Periksa suhu tubuh berkala
+                  </li>
+                  <li class="list-group-item px-0 py-2 d-flex align-items-center gap-2 text-dark">
+                    <i class="bi bi-check-circle-fill text-success"></i> Periksa tekanan darah posisi duduk
+                  </li>
+                  <li class="list-group-item px-0 py-2 d-flex align-items-center gap-2 text-dark">
+                    <i class="bi bi-check-circle-fill text-success"></i> Evaluasi kondisi umum dan hidrasi pasien
+                  </li>
+                </ul>
+
+                <h6 class="fw-bold small text-muted text-uppercase mb-2">Catatan Pemeriksaan Perawat / Medis:</h6>
+                <div class="p-3 rounded bg-light border text-dark" id="kunjunganCatatan">
+                  Pasien mengalami demam akut hari ke-2. Faring tampak hiperemis ringan. Diberikan edukasi hidrasi oral dan antipiretik. Dianjurkan kontrol jika demam menetap >3 hari.
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/data-store.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/clinic.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.checkAuth(['OWNER', 'RESEPSIONIS', 'PERAWAT']);
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const visitId = urlParams.get('id') || 'KNJ-20261003-001';
+
+      const visit = DataStore.getVisitById(visitId);
+      if (visit) {
+        document.getElementById('kunjunganId').textContent = visit.id;
+        document.getElementById('kunjunganTanggal').textContent = Clinic.formatIndoDate(visit.tanggal);
+        document.getElementById('kunjunganNoAntrean').textContent = `Antrean: ${visit.nomorAntrean || 'A001'}`;
+        document.getElementById('kunjunganKeluhan').textContent = visit.keluhan || '-';
+        document.getElementById('badgeStatusKunjungan').textContent = visit.status || 'Selesai';
+        document.getElementById('kunjunganNoRm').textContent = visit.noRm || 'RM0001';
+        document.getElementById('kunjunganCatatan').textContent = visit.catatanPemeriksaan || 'Belum ada catatan tambahan.';
+
+        // Vitals
+        if (visit.tandaVital) {
+          document.getElementById('vitalTensi').textContent = visit.tandaVital.tensi || '-';
+          document.getElementById('vitalSuhu').textContent = visit.tandaVital.suhu || '-';
+          document.getElementById('vitalNadi').textContent = visit.tandaVital.nadi || '-';
+          document.getElementById('vitalBerat').textContent = visit.tandaVital.berat || '-';
+          document.getElementById('vitalTinggi').textContent = visit.tandaVital.tinggi || '-';
+        }
+
+        // Patient info
+        const p = DataStore.getPatientByRm(visit.noRm);
+        if (p) {
+          document.getElementById('kunjunganNama').textContent = p.nama;
+          document.getElementById('kunjunganGender').textContent = p.jenisKelamin || '-';
+          document.getElementById('kunjunganTtl').textContent = `${Clinic.formatIndoDate(p.tanggalLahir)}`;
+          document.getElementById('kunjunganTelepon').textContent = p.telepon || '-';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

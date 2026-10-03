@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemeriksaan Pasien - Sistem Informasi Klinik</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../assets/css/clinic.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    
+    <!-- SIDEBAR (PERAWAT) -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="bi bi-hospital"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <div class="sidebar-brand-name">KLINIK SEHAT MEDIKA</div>
+          <div class="sidebar-brand-subtitle">Sistem Informasi Klinik</div>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="sidebar-section-title">Menu Perawat</div>
+        
+        <a href="dashboard.html" class="sidebar-nav-item">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="antrean.html" class="sidebar-nav-item">
+          <i class="bi bi-list-ol"></i>
+          <span>Antrean</span>
+        </a>
+        <a href="pasien.html" class="sidebar-nav-item">
+          <i class="bi bi-people"></i>
+          <span>Data Pasien</span>
+        </a>
+        <a href="pemeriksaan.html" class="sidebar-nav-item active">
+          <i class="bi bi-heart-pulse"></i>
+          <span>Pemeriksaan</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <button type="button" class="btn btn-logout" onclick="Auth.logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTAINER -->
+    <div class="app-main">
+      
+      <!-- TOPBAR -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button type="button" class="sidebar-toggle-btn js-sidebar-toggle d-lg-none">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="page-breadcrumb-wrap">
+            <h1 class="page-main-title">Pemeriksaan Pasien</h1>
+            <p class="breadcrumb-sub">Anamnesis, rekomendasi obat dinamis, dan pencatatan tanda vital.</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="role-badge-switch d-none d-md-flex">
+            <button class="role-badge-btn" onclick="Auth.loginAsRole('OWNER')">Owner</button>
+            <button class="role-badge-btn" onclick="Auth.loginAsRole('RESEPSIONIS')">Resepsionis</button>
+            <button class="role-badge-btn active" onclick="Auth.loginAsRole('PERAWAT')">Perawat</button>
+          </div>
+
+          <div class="dropdown">
+            <button class="user-profile-btn" type="button" data-bs-toggle="dropdown">
+              <div class="user-avatar js-user-avatar">DK</div>
+              <div class="user-info-text d-none d-sm-block">
+                <div class="user-name js-user-name">Ns. Dian Kusuma, S.Kep</div>
+                <div class="user-role-badge">PERAWAT <i class="bi bi-chevron-down ms-1 small"></i></div>
+              </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border">
+              <li><button class="dropdown-item text-danger" onclick="Auth.logout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</button></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <main class="app-content">
+
+        <!-- PATIENT INFORMATION CARD (Section 14) -->
+        <div class="card mb-4 border-start border-4 border-success">
+          <div class="card-header bg-white py-2">
+            <div class="d-flex align-items-center justify-content-between w-100">
+              <span class="small fw-bold text-uppercase text-muted"><i class="bi bi-person-badge text-success me-1"></i> Identitas Pasien Sedang Diperiksa</span>
+              <span class="badge bg-warning-subtle text-dark border border-warning font-monospace px-2" id="infoQueueBadge">Antrean: A002</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row g-3 align-items-center">
+              
+              <!-- No RM -->
+              <div class="col-6 col-md-3">
+                <div class="small text-muted">No. Rekam Medis:</div>
+                <code class="fs-5 fw-bold text-dark font-monospace" id="infoNoRm">RM0001</code>
+              </div>
+
+              <!-- Nama -->
+              <div class="col-6 col-md-3">
+                <div class="small text-muted">Nama Pasien:</div>
+                <div class="fs-5 fw-bold text-dark" id="infoNama">Andi Saputra</div>
+              </div>
+
+              <!-- Tanggal Lahir -->
+              <div class="col-6 col-md-3">
+                <div class="small text-muted">Tanggal Lahir:</div>
+                <div class="fw-semibold text-dark" id="infoTglLahir">12-05-1995 (31 th)</div>
+              </div>
+
+              <!-- Jenis Kelamin -->
+              <div class="col-6 col-md-3">
+                <div class="small text-muted">Jenis Kelamin:</div>
+                <div class="fw-semibold text-dark" id="infoGender">
+                  <span class="badge bg-primary-subtle text-primary border">Laki-laki</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <form id="formPemeriksaan" novalidate>
+          
+          <!-- SECTION 15: DYNAMIC COMPLAINT RECOMMENDATION -->
+          <div class="card mb-4">
+            <div class="card-header bg-white">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-chat-left-heart-fill text-success"></i>
+                <span class="fw-bold">Anamnesis & Keluhan Pasien</span>
+              </div>
+              <span class="badge bg-light text-secondary border">Real-time Analysis</span>
+            </div>
+            
+            <div class="card-body">
+              
+              <!-- Textarea Keluhan Utama -->
+              <div class="mb-3">
+                <label for="keluhanUtama" class="form-label fw-bold">
+                  Keluhan Utama <span class="required-indicator">*</span>
+                </label>
+                <div class="small text-muted mb-2">
+                  Contoh kata kunci: <em>demam, batuk, sakit kepala, mual, muntah, diare, nyeri perut, sesak, nyeri tenggorokan</em>
+                </div>
+                <textarea 
+                  class="form-control" 
+                  id="keluhanUtama" 
+                  rows="3" 
+                  placeholder="Ketik keluhan pasien..." 
+                  required
+                >Pasien mengeluh demam dan sakit kepala.</textarea>
+                <div class="invalid-feedback">Keluhan utama pasien wajib diisi.</div>
+              </div>
+
+              <!-- Dynamic Recommendation Panel (Target container) -->
+              <div id="dynamicRecommendationPanel" class="recommendation-panel">
+                <!-- Rendered dynamically by recommendation.js -->
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SECTION 16: TANDA-TANDA VITAL -->
+          <div class="card mb-4">
+            <div class="card-header bg-white">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-activity text-success"></i>
+                <span class="fw-bold">Tanda-Tanda Vital</span>
+              </div>
+              <span class="small text-muted"><span class="text-danger">*</span> Masukkan nilai numerik valid</span>
+            </div>
+
+            <div class="card-body">
+              <div class="row g-3">
+                
+                <!-- Tekanan Darah: [ 120/80 ] mmHg -->
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <div class="vital-sign-card">
+                    <label for="vitalTensiInput" class="vital-sign-label">
+                      <i class="bi bi-speedometer text-danger"></i> Tekanan Darah <span class="required-indicator">*</span>
+                    </label>
+                    <div class="vital-sign-input-wrap">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="vitalTensiInput" 
+                        placeholder="120/80" 
+                        value="120/80" 
+                        pattern="^\d{2,3}\/\d{2,3}$"
+                        required
+                      >
+                      <span class="vital-sign-unit">mmHg</span>
+                    </div>
+                    <div class="invalid-feedback">Format tensi: 120/80</div>
+                  </div>
+                </div>
+
+                <!-- Suhu: [ 36.5 ] °C -->
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <div class="vital-sign-card">
+                    <label for="vitalSuhuInput" class="vital-sign-label">
+                      <i class="bi bi-thermometer-half text-warning"></i> Suhu Tubuh <span class="required-indicator">*</span>
+                    </label>
+                    <div class="vital-sign-input-wrap">
+                      <input 
+                        type="number" 
+                        step="0.1" 
+                        min="30" 
+                        max="45" 
+                        class="form-control" 
+                        id="vitalSuhuInput" 
+                        placeholder="36.5" 
+                        value="36.5" 
+                        required
+                      >
+                      <span class="vital-sign-unit">°C</span>
+                    </div>
+                    <div class="invalid-feedback">Suhu harus antara 30.0 - 45.0 °C</div>
+                  </div>
+                </div>
+
+                <!-- Berat Badan: [ 65 ] kg -->
+                <div class="col-12 col-sm-6 col-lg-4">
+                  <div class="vital-sign-card">
+                    <label for="vitalBeratInput" class="vital-sign-label">
+                      <i class="bi bi-person text-primary"></i> Berat Badan <span class="required-indicator">*</span>
+                    </label>
+                    <div class="vital-sign-input-wrap">
+                      <input 
+                        type="number" 
+                        step="0.5" 
+                        min="1" 
+                        max="300" 
+                        class="form-control" 
+                        id="vitalBeratInput" 
+                        placeholder="65" 
+                        value="65" 
+                        required
+                      >
+                      <span class="vital-sign-unit">kg</span>
+                    </div>
+                    <div class="invalid-feedback">Berat badan tidak valid.</div>
+                  </div>
+                </div>
+
+                <!-- Tinggi Badan: [ 170 ] cm -->
+                <div class="col-12 col-sm-6 col-lg-6">
+                  <div class="vital-sign-card">
+                    <label for="vitalTinggiInput" class="vital-sign-label">
+                      <i class="bi bi-arrows-vertical text-info"></i> Tinggi Badan <span class="required-indicator">*</span>
+                    </label>
+                    <div class="vital-sign-input-wrap">
+                      <input 
+                        type="number" 
+                        step="1" 
+                        min="20" 
+                        max="250" 
+                        class="form-control" 
+                        id="vitalTinggiInput" 
+                        placeholder="170" 
+                        value="170" 
+                        required
+                      >
+                      <span class="vital-sign-unit">cm</span>
+                    </div>
+                    <div class="invalid-feedback">Tinggi badan tidak valid.</div>
+                  </div>
+                </div>
+
+                <!-- Denyut Nadi: [ 80 ] bpm -->
+                <div class="col-12 col-sm-6 col-lg-6">
+                  <div class="vital-sign-card">
+                    <label for="vitalNadiInput" class="vital-sign-label">
+                      <i class="bi bi-heart-pulse-fill text-danger"></i> Denyut Nadi <span class="required-indicator">*</span>
+                    </label>
+                    <div class="vital-sign-input-wrap">
+                      <input 
+                        type="number" 
+                        step="1" 
+                        min="30" 
+                        max="220" 
+                        class="form-control" 
+                        id="vitalNadiInput" 
+                        placeholder="80" 
+                        value="80" 
+                        required
+                      >
+                      <span class="vital-sign-unit">bpm</span>
+                    </div>
+                    <div class="invalid-feedback">Denyut nadi harus antara 30-220 bpm.</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 17: CATATAN PEMERIKSAAN -->
+          <div class="card mb-4">
+            <div class="card-header bg-white">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-pencil-square text-success"></i>
+                <span class="fw-bold">Catatan Pemeriksaan</span>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="catatanPemeriksaanTextarea" class="form-label">
+                  Hasil Pengamatan Fisik & Catatan Tambahan
+                </label>
+                <textarea 
+                  class="form-control" 
+                  id="catatanPemeriksaanTextarea" 
+                  rows="3" 
+                  placeholder="Masukkan catatan hasil pemeriksaan..."
+                >Keadaan umum sedang, compos mentis. Konjungtiva anemis (-), sklera ikterik (-). Faring hiperemis minimal. Disarankan istirahat cukup dan banyak minum air.</textarea>
+              </div>
+
+              <!-- Buttons (Section 17: "SIMPAN PEMERIKSAAN", Secondary "BATAL") -->
+              <div class="d-flex align-items-center justify-content-end gap-3 pt-3 border-top">
+                <a href="antrean.html" class="btn btn-outline-secondary px-4">
+                  BATAL
+                </a>
+                <button type="submit" class="btn btn-primary px-4 fw-bold" id="btnSimpanPemeriksaan">
+                  <i class="bi bi-check2-circle"></i> SIMPAN PEMERIKSAAN
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/data-store.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/recommendation.js"></script>
+  <script src="../assets/js/clinic.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.checkAuth(['PERAWAT']);
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const queueNum = urlParams.get('queue') || 'A002';
+      const patientRm = urlParams.get('rm') || 'RM0002';
+
+      // Load patient & queue
+      const patient = DataStore.getPatientByRm(patientRm) || DataStore.getPatientByRm('RM0001');
+      if (patient) {
+        document.getElementById('infoNoRm').textContent = patient.noRm;
+        document.getElementById('infoNama').textContent = patient.nama;
+        document.getElementById('infoTglLahir').textContent = `${patient.tanggalLahir} (31 th)`;
+        document.getElementById('infoGender').innerHTML = `<span class="badge ${patient.jenisKelamin === 'Laki-laki' ? 'bg-primary-subtle text-primary border' : 'bg-danger-subtle text-danger border'}">${patient.jenisKelamin}</span>`;
+      }
+      document.getElementById('infoQueueBadge').textContent = `Antrean: ${queueNum}`;
+
+      // Initialize Dynamic Complaint Recommendation Engine (Section 15)
+      const complaintTextarea = document.getElementById('keluhanUtama');
+      const recPanel = document.getElementById('dynamicRecommendationPanel');
+
+      RecommendationEngine.bindToElement(complaintTextarea, recPanel, { debounceMs: 350 });
+
+      // Run initial analysis on pre-filled text
+      const initialAnalysis = RecommendationEngine.analyze(complaintTextarea.value);
+      RecommendationEngine.render(recPanel, initialAnalysis);
+
+      // Handle Form Submission (Section 17)
+      const form = document.getElementById('formPemeriksaan');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.classList.add('was-validated');
+          Clinic.showToast('warning', '! Mohon lengkapi tanda vital dan keluhan pasien.');
+          return;
+        }
+
+        const tensi = document.getElementById('vitalTensiInput').value.trim();
+        const suhu = document.getElementById('vitalSuhuInput').value.trim();
+        const berat = document.getElementById('vitalBeratInput').value.trim();
+        const tinggi = document.getElementById('vitalTinggiInput').value.trim();
+        const nadi = document.getElementById('vitalNadiInput').value.trim();
+        const keluhan = complaintTextarea.value.trim();
+        const catatan = document.getElementById('catatanPemeriksaanTextarea').value.trim();
+
+        // Save visit to DataStore
+        const newVisit = DataStore.addVisit({
+          nomorAntrean: queueNum,
+          noRm: patient ? patient.noRm : 'RM0001',
+          nama: patient ? patient.nama : 'Pasien',
+          keluhan: keluhan,
+          tandaVital: { tensi, suhu, berat, tinggi, nadi },
+          catatanPemeriksaan: catatan,
+          status: 'Selesai'
+        });
+
+        // Update queue status to "Selesai" (Section 17)
+        DataStore.updateQueueStatus(queueNum, 'Selesai');
+
+        // Show Toast: "✓ Pemeriksaan berhasil disimpan." (Section 17)
+        Clinic.showToast('success', '✓ Pemeriksaan berhasil disimpan.');
+
+        setTimeout(() => {
+          window.location.href = 'antrean.html';
+        }, 800);
+      });
+    });
+  </script>
+</body>
+</html>

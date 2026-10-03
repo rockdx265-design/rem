@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Informasi Klinik - Prototype UI</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Chart.js for dummy visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <!-- Custom Clinic Styles -->
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. LOGIN SCREEN (Section 4)
+       ========================================================================= -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card-wrapper">
+      <div class="row g-0">
+        
+        <!-- Left Section: Clinic Branding -->
+        <div class="col-lg-6 login-left-brand">
+          <div>
+            <div class="login-brand-badge">
+              <i class="bi bi-hospital"></i>
+            </div>
+            <h1 class="login-clinic-name">KLINIK SEHAT MEDIKA</h1>
+            <div class="login-clinic-subtitle">Sistem Informasi Klinik</div>
+            <p class="login-clinic-desc">
+              Kelola data pasien, kunjungan, antrean, dan pemeriksaan dengan lebih mudah.
+            </p>
+
+            <ul class="login-features-list">
+              <li>
+                <i class="bi bi-check2-circle text-white fs-5"></i>
+                <span>Pencatatan Rekam Medis Pasien Terpusat</span>
+              </li>
+              <li>
+                <i class="bi bi-check2-circle text-white fs-5"></i>
+                <span>Sistem Antrean & Pemanggilan Pasien Real-time</span>
+              </li>
+              <li>
+                <i class="bi bi-check2-circle text-white fs-5"></i>
+                <span>Rekomendasi Obat Dinamis & Tanda Vital</span>
+              </li>
+              <li>
+                <i class="bi bi-check2-circle text-white fs-5"></i>
+                <span>Laporan & Analitik Kunjungan Komprehensif</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-4 border-top border-white border-opacity-25 text-white-50 text-xs">
+            &copy; 2026 Klinik Sehat Medika. Prototipe Frontend UI (Mock Data).
+          </div>
+        </div>
+
+        <!-- Right Section: Login Card -->
+        <div class="col-lg-6 login-right-form d-flex flex-column justify-content-center">
+          <div>
+            <h2 class="login-form-title">Masuk ke Sistem</h2>
+            <p class="login-form-subtitle">Silakan masukkan username dan kata sandi akun klinik Anda</p>
+
+            <!-- Quick Demo Role Switcher -->
+            <div class="p-3 mb-4 rounded-3 bg-light border">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-xs fw-bold text-uppercase text-muted">
+                  <i class="bi bi-lightning-charge-fill text-warning me-1"></i>Pilih Role Demo:
+                </span>
+                <span class="badge bg-success-subtle text-success border">1-Klik Isi</span>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-sm btn-outline-success" onclick="quickFillLogin('OWNER', 'admin', 'admin123')">
+                  <i class="bi bi-shield-check"></i> Owner
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="quickFillLogin('RESEPSIONIS', 'siti', 'siti123')">
+                  <i class="bi bi-person-badge"></i> Resepsionis
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-info" onclick="quickFillLogin('PERAWAT', 'andi', 'andi123')">
+                  <i class="bi bi-heart-pulse"></i> Perawat
+                </button>
+              </div>
+            </div>
+
+            <form id="loginForm" novalidate>
+              <!-- Username -->
+              <div class="mb-3">
+                <label for="usernameInput" class="form-label fw-medium text-dark small">Username</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person"></i></span>
+                  <input type="text" class="form-control border-start-0 ps-0" id="usernameInput" placeholder="Masukkan username" value="admin" required>
+                </div>
+              </div>
+
+              <!-- Password -->
+              <div class="mb-3">
+                <label for="passwordInput" class="form-label fw-medium text-dark small">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control border-start-0 border-end-0 ps-0" id="passwordInput" placeholder="Masukkan password" value="admin123" required>
+                  <button type="button" class="input-group-text bg-light border-start-0 text-muted" id="togglePasswordBtn" title="Tampilkan/Sembunyikan Password">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Remember Me & Forgot Password -->
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="rememberMeCheckbox" checked>
+                  <label class="form-check-label small text-muted" for="rememberMeCheckbox">
+                    Ingat saya
+                  </label>
+                </div>
+                <a href="javascript:void(0)" class="text-xs text-muted" onclick="showToast('info', 'Fitur reset password (Demo UI).')">Lupa password?</a>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary w-100 py-2">
+                <i class="bi bi-box-arrow-in-right me-1"></i> MASUK
+              </button>
+
+              <div class="mt-3 text-center">
+                <small class="text-muted text-xs">
+                  <i class="bi bi-info-circle me-1"></i>Hanya prototipe UI tanpa backend / autentikasi asli.
+                </small>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. MAIN APP SHELL (Sidebar, Topbar, Content)
+       ========================================================================= -->
+  <div id="appShell" class="app-container d-none">
+    
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebarBackdrop" class="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
+    <!-- LEFT SIDEBAR (Section 3) -->
+    <aside id="appSidebar" class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="bi bi-hospital"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <div class="sidebar-brand-name">KLINIK SEHAT MEDIKA</div>
+          <div class="sidebar-brand-subtitle">Sistem Informasi Klinik</div>
+        </div>
+      </div>
+
+      <!-- Navigation Menu Items (Populated dynamically by role in app.js) -->
+      <div class="sidebar-menu" id="sidebarMenuItems">
+        <!-- Built by app.js renderSidebarMenu() -->
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button type="button" class="btn btn-outline-danger w-100 btn-sm" onclick="navigateTo('login')">
+          <i class="bi bi-box-arrow-right"></i> Keluar (Logout)
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="app-main">
+      
+      <!-- TOPBAR (Section 3) -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button type="button" class="topbar-toggle-btn" onclick="toggleMobileSidebar()" aria-label="Toggle Sidebar">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="topbar-title-wrap">
+            <h1 class="topbar-page-title" id="topbarPageTitle">Dashboard</h1>
+            <p class="topbar-breadcrumb" id="topbarBreadcrumb">Klinik Sehat Medika</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Role Switcher Pills -->
+          <div class="role-selector-group d-none d-md-flex" title="Pilih status navigasi role">
+            <button type="button" class="role-pill-btn active" data-role="OWNER" onclick="setRole('OWNER')">
+              <i class="bi bi-person-fill-gear me-1"></i>Owner
+            </button>
+            <button type="button" class="role-pill-btn" data-role="RESEPSIONIS" onclick="setRole('RESEPSIONIS')">
+              <i class="bi bi-person-workspace me-1"></i>Resepsionis
+            </button>
+            <button type="button" class="role-pill-btn" data-role="PERAWAT" onclick="setRole('PERAWAT')">
+              <i class="bi bi-heart-pulse-fill me-1"></i>Perawat
+            </button>
+          </div>
+
+          <!-- Notification Dropdown -->
+          <div class="dropdown">
+            <button class="topbar-icon-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifikasi Klinik">
+              <i class="bi bi-bell"></i>
+              <span class="topbar-badge-dot"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border p-2" style="width: 300px;">
+              <li class="p-2 border-bottom d-flex justify-content-between align-items-center">
+                <span class="fw-bold small text-dark">Pemberitahuan</span>
+                <span class="badge bg-success-subtle text-success">3 Baru</span>
+              </li>
+              <li>
+                <a class="dropdown-item py-2 px-2 rounded small" href="javascript:void(0)" onclick="navigateTo('antrean')">
+                  <div class="fw-medium text-dark"><i class="bi bi-person-plus text-success me-1"></i> Antrean Baru: A005</div>
+                  <div class="text-xs text-muted">Hendra Wijaya mendaftar 5 mnt lalu</div>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item py-2 px-2 rounded small" href="javascript:void(0)" onclick="navigateTo('pemeriksaan')">
+                  <div class="fw-medium text-dark"><i class="bi bi-heart-pulse text-primary me-1"></i> Pasien Siap Diperiksa</div>
+                  <div class="text-xs text-muted">A002 Budi Santoso menunggu pemeriksaan</div>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item py-2 px-2 rounded small" href="javascript:void(0)" onclick="navigateTo('laporan')">
+                  <div class="fw-medium text-dark"><i class="bi bi-file-earmark-check text-warning me-1"></i> Laporan Harian</div>
+                  <div class="text-xs text-muted">Rekapitulasi 35 kunjungan hari ini</div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- User Profile Dropdown -->
+          <div class="dropdown">
+            <button class="user-profile-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="user-avatar" id="topbarUserAvatar">AK</div>
+              <div class="d-none d-sm-block text-start">
+                <div class="user-info-name" id="topbarUserName">Admin Klinik</div>
+                <div class="user-info-role" id="topbarUserRole">OWNER ▼</div>
+              </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border">
+              <li class="px-3 py-2 border-bottom">
+                <div class="text-xs text-muted">Beralih Tampilan Role:</div>
+                <div class="mt-1 d-flex flex-column gap-1">
+                  <button class="btn btn-sm btn-light text-start py-1" onclick="setRole('OWNER')"><i class="bi bi-shield me-2 text-success"></i>Owner</button>
+                  <button class="btn btn-sm btn-light text-start py-1" onclick="setRole('RESEPSIONIS')"><i class="bi bi-person me-2 text-primary"></i>Resepsionis</button>
+                  <button class="btn btn-sm btn-light text-start py-1" onclick="setRole('PERAWAT')"><i class="bi bi-heart me-2 text-info"></i>Perawat</button>
+                </div>
+              </li>
+              <li><hr class="dropdown-divider my-1"></li>
+              <li>
+                <a class="dropdown-item text-danger py-2" href="javascript:void(0)" onclick="navigateTo('login')">
+                  <i class="bi bi-box-arrow-right me-2"></i> Keluar
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </header>
+
+      <!-- MAIN CONTENT VIEW CONTAINER -->
+      <main class="app-content">
+
+        <!-- =====================================================================
+             VIEW 1: OWNER DASHBOARD (Section 5)
+             ===================================================================== -->
+        <section id="view-owner-dashboard" class="view-section">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Dashboard Owner</h4>
+              <p class="text-muted small mb-0">Ringkasan aktivitas klinik hari ini.</p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-light-clinic btn-sm" onclick="navigateTo('laporan')">
+                <i class="bi bi-file-earmark-bar-graph"></i> Buka Laporan Lengkap
+              </button>
+            </div>
+          </div>
+
+          <!-- Statistics Cards (4 Columns Desktop, 2 Tablet, 1 Mobile) -->
+          <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-sm-6">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Total Pasien</div>
+                  <div class="stat-value">250</div>
+                  <div class="stat-sub text-success"><i class="bi bi-arrow-up-short"></i> +12 bulan ini</div>
+                </div>
+                <div class="stat-icon stat-icon-green">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Total Kunjungan</div>
+                  <div class="stat-value">840</div>
+                  <div class="stat-sub text-success"><i class="bi bi-graph-up-arrow"></i> Akumulasi tahun berjalan</div>
+                </div>
+                <div class="stat-icon stat-icon-blue">
+                  <i class="bi bi-clipboard2-pulse-fill"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Kunjungan Hari Ini</div>
+                  <div class="stat-value text-success">35</div>
+                  <div class="stat-sub text-muted">03 Oktober 2026</div>
+                </div>
+                <div class="stat-icon stat-icon-amber">
+                  <i class="bi bi-calendar2-check-fill"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Pengguna Aktif</div>
+                  <div class="stat-value">8</div>
+                  <div class="stat-sub text-muted">Staf bertugas aktif</div>
+                </div>
+                <div class="stat-icon stat-icon-purple">
+                  <i class="bi bi-person-check-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-4">
+            <!-- Section: Kunjungan Hari Ini Table -->
+            <div class="col-lg-7">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold"><i class="bi bi-list-check me-2 text-success"></i>Kunjungan Hari Ini</h6>
+                  <button type="button" class="btn btn-sm btn-link text-decoration-none p-0 fw-semibold" onclick="navigateTo('kunjungan')">
+                    Lihat Semua Kunjungan <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+                <div class="table-responsive">
+                  <table class="table-clean">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Pasien</th>
+                        <th>No. RM</th>
+                        <th>Jam</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-muted fw-medium">01</td>
+                        <td class="fw-bold">Andi Saputra</td>
+                        <td><span class="badge bg-light text-dark border font-monospace">RM0001</span></td>
+                        <td>09:00</td>
+                        <td>
+                          <span class="badge-status badge-status-selesai">
+                            <i class="bi bi-check-circle"></i> Selesai
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted fw-medium">02</td>
+                        <td class="fw-bold">Budi Santoso</td>
+                        <td><span class="badge bg-light text-dark border font-monospace">RM0002</span></td>
+                        <td>09:15</td>
+                        <td>
+                          <span class="badge-status badge-status-menunggu">
+                            <i class="bi bi-clock"></i> Menunggu
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted fw-medium">03</td>
+                        <td class="fw-bold">Siti Aminah</td>
+                        <td><span class="badge bg-light text-dark border font-monospace">RM0003</span></td>
+                        <td>09:30</td>
+                        <td>
+                          <span class="badge-status badge-status-diperiksa">
+                            <i class="bi bi-heart-pulse"></i> Diperiksa
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section: Kunjungan 7 Hari Terakhir Chart -->
+            <div class="col-lg-5">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold"><i class="bi bi-bar-chart-line me-2 text-success"></i>Kunjungan 7 Hari Terakhir</h6>
+                  <span class="badge bg-light text-muted border">Tren Kunjungan</span>
+                </div>
+                <div class="card-clean-body">
+                  <div style="height: 240px; position: relative;">
+                    <canvas id="ownerWeeklyChart"></canvas>
+                  </div>
+                  <div class="mt-3 pt-2 border-top text-xs text-muted d-flex justify-content-between">
+                    <span>Rata-rata: 34 kunjungan/hari</span>
+                    <span class="text-success fw-semibold">Puncak: 42 (01 Okt)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 2: RESEPSIONIS DASHBOARD (Section 6)
+             ===================================================================== -->
+        <section id="view-resepsionis-dashboard" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Dashboard</h4>
+              <p class="text-muted small mb-0">Selamat datang, Admin Resepsionis.</p>
+            </div>
+            <div>
+              <!-- Primary Action: + Pendaftaran Pasien -->
+              <button class="btn btn-primary" onclick="navigateTo('pendaftaran')">
+                <i class="bi bi-person-plus-fill me-1"></i> + Pendaftaran Pasien
+              </button>
+            </div>
+          </div>
+
+          <!-- Statistics Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-sm-6">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Total Pasien</div>
+                  <div class="stat-value">120</div>
+                  <div class="stat-sub text-muted">Pasien terdaftar</div>
+                </div>
+                <div class="stat-icon stat-icon-green">
+                  <i class="bi bi-person-lines-fill"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Kunjungan Hari Ini</div>
+                  <div class="stat-value text-success">35</div>
+                  <div class="stat-sub text-muted">Target harian 40</div>
+                </div>
+                <div class="stat-icon stat-icon-blue">
+                  <i class="bi bi-journal-check"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Antrean Saat Ini</div>
+                  <div class="stat-value text-warning">8</div>
+                  <div class="stat-sub text-muted">Dalam antrean aktif</div>
+                </div>
+                <div class="stat-icon stat-icon-amber">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Pasien Baru</div>
+                  <div class="stat-value">5</div>
+                  <div class="stat-sub text-success">Registrasi hari ini</div>
+                </div>
+                <div class="stat-icon stat-icon-purple">
+                  <i class="bi bi-person-plus"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Antrean Hari Ini Table -->
+          <div class="card-clean">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-list-ol me-2 text-success"></i>Antrean Hari Ini</h6>
+              <button class="btn btn-sm btn-outline-primary" onclick="navigateTo('antrean')">
+                <i class="bi bi-arrow-right"></i> Kelola Semua Antrean
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="table-clean">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Antrean</th>
+                    <th>Pasien</th>
+                    <th>Jam</th>
+                    <th>Status</th>
+                    <th class="text-end">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-muted fw-medium">01</td>
+                    <td><span class="badge bg-light text-dark border font-monospace fs-6">A001</span></td>
+                    <td class="fw-bold">Andi Saputra</td>
+                    <td>09:00</td>
+                    <td>
+                      <span class="badge-status badge-status-selesai">
+                        <i class="bi bi-check-circle"></i> Selesai
+                      </span>
+                    </td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border" onclick="showToast('info', 'Melihat detail antrean A001')">
+                        <i class="bi bi-eye"></i> Detail
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted fw-medium">02</td>
+                    <td><span class="badge bg-warning-subtle text-warning-emphasis border font-monospace fs-6">A002</span></td>
+                    <td class="fw-bold">Budi Santoso</td>
+                    <td>09:15</td>
+                    <td>
+                      <span class="badge-status badge-status-menunggu">
+                        <i class="bi bi-clock"></i> Menunggu
+                      </span>
+                    </td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-outline-primary" onclick="panggilAntrean('A002', 'Budi Santoso')">
+                        <i class="bi bi-volume-up"></i> Panggil
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted fw-medium">03</td>
+                    <td><span class="badge bg-primary-subtle text-primary border font-monospace fs-6">A003</span></td>
+                    <td class="fw-bold">Siti Aminah</td>
+                    <td>09:30</td>
+                    <td>
+                      <span class="badge-status badge-status-diperiksa">
+                        <i class="bi bi-heart-pulse"></i> Diperiksa
+                      </span>
+                    </td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border" onclick="showToast('info', 'Pasien A003 sedang di ruang periksa')">
+                        <i class="bi bi-eye"></i> Detail
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 3: PERAWAT DASHBOARD (Section 7)
+             ===================================================================== -->
+        <section id="view-perawat-dashboard" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Dashboard Perawat</h4>
+              <p class="text-muted small mb-0">Kelola antrean dan pemeriksaan pasien.</p>
+            </div>
+            <div>
+              <button class="btn btn-primary" onclick="navigateTo('pemeriksaan')">
+                <i class="bi bi-heart-pulse-fill me-1"></i> Form Pemeriksaan
+              </button>
+            </div>
+          </div>
+
+          <!-- Statistics Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Antrean Menunggu</div>
+                  <div class="stat-value text-warning">8</div>
+                  <div class="stat-sub text-muted">Pasien dalam antrean</div>
+                </div>
+                <div class="stat-icon stat-icon-amber">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Sedang Diperiksa</div>
+                  <div class="stat-value text-primary">1</div>
+                  <div class="stat-sub text-muted">Di Ruang Periksa 1</div>
+                </div>
+                <div class="stat-icon stat-icon-blue">
+                  <i class="bi bi-person-walking"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Selesai</div>
+                  <div class="stat-value text-success">24</div>
+                  <div class="stat-sub text-muted">Pasien selesai ditangani</div>
+                </div>
+                <div class="stat-icon stat-icon-green">
+                  <i class="bi bi-check2-circle"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Card: Antrean Saat Ini -->
+          <div class="card-clean border-start border-4 border-success mb-4">
+            <div class="card-clean-body p-4">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge bg-success text-white px-2 py-1">PANGGILAN BERIKUTNYA</span>
+                    <span class="text-muted text-xs">Poli Umum</span>
+                  </div>
+                  <div class="d-flex align-items-baseline gap-3 mb-2">
+                    <div class="display-6 fw-bold font-monospace text-dark">A002</div>
+                    <div>
+                      <h4 class="fw-bold mb-0 text-dark">Budi Santoso</h4>
+                      <div class="text-muted small font-monospace">No. RM: RM0002 &bull; Laki-laki (26 thn)</div>
+                    </div>
+                  </div>
+                  <p class="text-muted mb-0">
+                    <span class="badge-status badge-status-menunggu">
+                      <i class="bi bi-clock"></i> Menunggu Pemeriksaan
+                    </span>
+                    <span class="ms-2 text-xs text-muted">Keluhan: Demam tinggi 3 hari dan batuk berdahak</span>
+                  </p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                  <button type="button" class="btn btn-primary btn-lg" onclick="navigateTo('pemeriksaan')">
+                    <i class="bi bi-heart-pulse-fill me-2"></i> Mulai Pemeriksaan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Below: Daftar Pasien yang Sedang Menunggu -->
+          <div class="card-clean">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-people me-2 text-success"></i>Daftar Pasien yang Sedang Menunggu</h6>
+              <span class="badge bg-light text-muted border">Urutan Antrean</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table-clean">
+                <thead>
+                  <tr>
+                    <th>Antrean</th>
+                    <th>No. RM</th>
+                    <th>Pasien</th>
+                    <th>Jam Daftar</th>
+                    <th>Keluhan Awal</th>
+                    <th>Status</th>
+                    <th class="text-end">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge bg-warning-subtle text-warning-emphasis border font-monospace fs-6">A002</span></td>
+                    <td><span class="badge bg-light text-dark border font-monospace">RM0002</span></td>
+                    <td class="fw-bold">Budi Santoso</td>
+                    <td>09:00</td>
+                    <td>Demam tinggi 3 hari dan batuk</td>
+                    <td><span class="badge-status badge-status-menunggu"><i class="bi bi-clock"></i> Menunggu</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-outline-primary" onclick="navigateTo('pemeriksaan')">
+                        <i class="bi bi-play-circle"></i> Periksa
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge bg-light text-dark border font-monospace fs-6">A004</span></td>
+                    <td><span class="badge bg-light text-dark border font-monospace">RM0004</span></td>
+                    <td class="fw-bold">Dewi Sartika</td>
+                    <td>09:25</td>
+                    <td>Nyeri perut kanan bawah dan mual</td>
+                    <td><span class="badge-status badge-status-menunggu"><i class="bi bi-clock"></i> Menunggu</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border" onclick="panggilAntrean('A004', 'Dewi Sartika')">
+                        <i class="bi bi-volume-up"></i> Panggil
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge bg-light text-dark border font-monospace fs-6">A005</span></td>
+                    <td><span class="badge bg-light text-dark border font-monospace">RM0005</span></td>
+                    <td class="fw-bold">Hendra Wijaya</td>
+                    <td>09:40</td>
+                    <td>Diare akut sejak semalam</td>
+                    <td><span class="badge-status badge-status-menunggu"><i class="bi bi-clock"></i> Menunggu</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border" onclick="panggilAntrean('A005', 'Hendra Wijaya')">
+                        <i class="bi bi-volume-up"></i> Panggil
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 4: DATA PASIEN (Section 8)
+             ===================================================================== -->
+        <section id="view-pasien" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Data Pasien</h4>
+              <p class="text-muted small mb-0">Kelola indeks rekam medis pasien klinik.</p>
+            </div>
+            <div>
+              <!-- Button: + Tambah Pasien -->
+              <button class="btn btn-primary" onclick="navigateTo('pasien-tambah')">
+                <i class="bi bi-person-plus-fill me-1"></i> + Tambah Pasien
+              </button>
+            </div>
+          </div>
+
+          <div class="card-clean">
+            <!-- Toolbar -->
+            <div class="card-clean-header flex-wrap gap-2">
+              <div class="d-flex align-items-center gap-2 flex-grow-1" style="max-width: 480px;">
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                  <input type="text" class="form-control border-start-0 ps-0" id="patientSearchInput" placeholder="Cari nama / No. RM" onkeyup="if(event.key==='Enter') searchPatients()">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="searchPatients()">
+                  CARI
+                </button>
+                <button type="button" class="btn btn-light border" onclick="document.getElementById('patientSearchInput').value=''; searchPatients();" title="Reset Pencarian">
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+              </div>
+
+              <div class="text-muted text-xs">
+                Menampilkan dummy data pasien
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table class="table-clean">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>No. RM</th>
+                    <th>Nama Pasien</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Tanggal Lahir</th>
+                    <th class="text-end">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="patientTableBody">
+                  <!-- Populated dynamically by app.js renderPatientTable() -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Empty Search State -->
+            <div id="patientTableEmpty" class="empty-state-card d-none">
+              <div class="empty-state-icon">
+                <i class="bi bi-search"></i>
+              </div>
+              <div class="empty-state-title">Data Tidak Ditemukan</div>
+              <div class="empty-state-desc">Tidak ada data pasien yang sesuai dengan kata kunci pencarian Anda.</div>
+              <button class="btn btn-sm btn-outline-primary" onclick="document.getElementById('patientSearchInput').value=''; searchPatients();">
+                Reset Pencarian
+              </button>
+            </div>
+
+            <!-- Pagination UI -->
+            <div class="p-3 border-top d-flex flex-wrap align-items-center justify-content-between gap-2">
+              <div class="text-xs text-muted">
+                Menampilkan <strong>1 - 5</strong> dari <strong>250</strong> data pasien
+              </div>
+              <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm mb-0">
+                  <li class="page-item disabled"><a class="page-link" href="javascript:void(0)">Sebelumnya</a></li>
+                  <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
+                  <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
+                  <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                  <li class="page-item"><a class="page-link" href="javascript:void(0)">Selanjutnya</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 5: TAMBAH PASIEN (Section 9)
+             ===================================================================== -->
+        <section id="view-pasien-tambah" class="view-section d-none">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Tambah Pasien</h4>
+              <p class="text-muted small mb-0">Registrasi pasien baru ke sistem klinik.</p>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" onclick="navigateTo('pasien')">
+              <i class="bi bi-arrow-left me-1"></i> Kembali ke Data Pasien
+            </button>
+          </div>
+
+          <form id="tambahPasienForm" onsubmit="event.preventDefault(); showToast('success', 'Data pasien baru berhasil disimpan.'); navigateTo('pasien');">
+            <!-- Section: Identitas Pasien -->
+            <div class="card-clean mb-4">
+              <div class="card-clean-header">
+                <h6 class="fw-bold"><i class="bi bi-person-vcard me-2 text-success"></i>Identitas Pasien</h6>
+              </div>
+              <div class="card-clean-body">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Nama Lengkap <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Contoh: Muhammad Farhan" required>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label small fw-medium">Tempat Lahir</label>
+                    <input type="text" class="form-control" placeholder="Kota / Kabupaten">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label small fw-medium">Tanggal Lahir <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" required>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label small fw-medium">Jenis Kelamin <span class="text-danger">*</span></label>
+                    <select class="form-select" required>
+                      <option value="">Pilih Jenis Kelamin</option>
+                      <option value="Laki-laki">Laki-laki</option>
+                      <option value="Perempuan">Perempuan</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Alamat Lengkap</label>
+                    <textarea class="form-control" rows="2" placeholder="Nama jalan, nomor rumah, RT/RW, kelurahan"></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">No. Telepon / WhatsApp <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control font-monospace" placeholder="08xxxxxxxxxx" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section: Data Tambahan -->
+            <div class="card-clean mb-4">
+              <div class="card-clean-header">
+                <h6 class="fw-bold"><i class="bi bi-shield-plus me-2 text-success"></i>Data Tambahan</h6>
+              </div>
+              <div class="card-clean-body">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Kontak Darurat</label>
+                    <input type="text" class="form-control" placeholder="Nama keluarga / kerabat terdekat">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Nomor Kontak Darurat</label>
+                    <input type="tel" class="form-control font-monospace" placeholder="08xxxxxxxxxx">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2 mb-5">
+              <button type="button" class="btn btn-outline-secondary" onclick="navigateTo('pasien')">
+                Batal
+              </button>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-lg me-1"></i> Simpan Pasien
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 6: DETAIL PASIEN (Section 10)
+             ===================================================================== -->
+        <section id="view-pasien-detail" class="view-section d-none">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Detail Pasien</h4>
+              <p class="text-muted small mb-0">Informasi rekam medis lengkap pasien.</p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-secondary btn-sm" onclick="navigateTo('pasien')">
+                <i class="bi bi-arrow-left me-1"></i> Kembali
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="navigateTo('pemeriksaan')">
+                <i class="bi bi-heart-pulse me-1"></i> Buat Pemeriksaan Baru
+              </button>
+            </div>
+          </div>
+
+          <!-- Header Card: No. RM & Nama & Status -->
+          <div class="card-clean border-start border-4 border-success mb-4">
+            <div class="card-clean-body p-4">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="stat-icon stat-icon-green" style="width: 56px; height: 56px; font-size: 1.8rem;">
+                    <i class="bi bi-person-fill"></i>
+                  </div>
+                  <div>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge bg-dark font-monospace fs-6" id="detailNoRM">RM0001</span>
+                      <span class="badge-status badge-status-selesai">Aktif</span>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-0 mt-1" id="detailNama">Andi Saputra</h3>
+                    <div class="text-muted small">Terdaftar sejak: 10 Januari 2026</div>
+                  </div>
+                </div>
+                <div>
+                  <button class="btn btn-outline-primary btn-sm" onclick="showToast('info', 'Cetak Kartu Berobat Pasien (Demo UI)')">
+                    <i class="bi bi-printer me-1"></i> Cetak Kartu Berobat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-4 mb-4">
+            <!-- Section: Informasi Pribadi -->
+            <div class="col-lg-5">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold"><i class="bi bi-person-lines-fill me-2 text-success"></i>Informasi Pribadi</h6>
+                </div>
+                <div class="card-clean-body">
+                  <table class="table table-sm table-borderless mb-0">
+                    <tbody>
+                      <tr>
+                        <td class="text-muted text-xs text-uppercase fw-bold" style="width: 40%;">Tgl. Lahir / Usia</td>
+                        <td class="text-dark fw-medium" id="detailTglLahir">12-05-1995 (31 tahun)</td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted text-xs text-uppercase fw-bold">Jenis Kelamin</td>
+                        <td class="text-dark fw-medium" id="detailGender">Laki-laki</td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted text-xs text-uppercase fw-bold">No. Telepon</td>
+                        <td class="font-monospace text-dark fw-medium" id="detailTelepon">081234567890</td>
+                      </tr>
+
+                      <tr>
+                        <td class="text-muted text-xs text-uppercase fw-bold">Alamat</td>
+                        <td class="text-dark" id="detailAlamat">Jl. Merdeka No. 12, Banda Aceh</td>
+                      </tr>
+                      <tr>
+                        <td class="text-muted text-xs text-uppercase fw-bold">Kontak Darurat</td>
+                        <td class="text-dark small" id="detailKontakDarurat">Rina Saputri (Istri) - 081234567899</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section: Riwayat Kunjungan -->
+            <div class="col-lg-7">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold"><i class="bi bi-clock-history me-2 text-success"></i>Riwayat Kunjungan</h6>
+                  <span class="badge bg-light text-muted border">3 Kunjungan</span>
+                </div>
+                <div class="table-responsive">
+                  <table class="table-clean">
+                    <thead>
+                      <tr>
+                        <th>Tanggal</th>
+                        <th>Keluhan</th>
+                        <th>Pemeriksaan</th>
+                        <th>Status</th>
+                        <th class="text-end">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-nowrap text-muted font-monospace">03/10/2026</td>
+                        <td class="fw-medium">Kontrol tensi rutin</td>
+                        <td class="small text-muted">Tensi 120/80 mmHg</td>
+                        <td><span class="badge-status badge-status-selesai">Selesai</span></td>
+                        <td class="text-end">
+                          <button class="btn btn-sm btn-light border py-0 px-2" onclick="showToast('info', 'Melihat resume medis kunjungan')">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-nowrap text-muted font-monospace">15/09/2026</td>
+                        <td class="fw-medium">Demam & tenggorokan sakit</td>
+                        <td class="small text-muted">Suhu 38.2°C, Farang hiperemis</td>
+                        <td><span class="badge-status badge-status-selesai">Selesai</span></td>
+                        <td class="text-end">
+                          <button class="btn btn-sm btn-light border py-0 px-2" onclick="showToast('info', 'Melihat resume medis kunjungan')">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-nowrap text-muted font-monospace">02/08/2026</td>
+                        <td class="fw-medium">Batuk berdahak 4 hari</td>
+                        <td class="small text-muted">Vesikuler normal, obat batuk</td>
+                        <td><span class="badge-status badge-status-selesai">Selesai</span></td>
+                        <td class="text-end">
+                          <button class="btn btn-sm btn-light border py-0 px-2" onclick="showToast('info', 'Melihat resume medis kunjungan')">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 7: PENDAFTARAN PASIEN & KUNJUNGAN (Section 11 & 12)
+             ===================================================================== -->
+        <section id="view-pendaftaran" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Pendaftaran Pasien</h4>
+              <p class="text-muted small mb-0">Cari data pasien lama atau daftarkan kunjungan ke antrean.</p>
+            </div>
+            <div>
+              <!-- Button: + Pasien Baru -->
+              <button class="btn btn-outline-primary" onclick="navigateTo('pasien-tambah')">
+                <i class="bi bi-person-plus me-1"></i> + Pasien Baru
+              </button>
+            </div>
+          </div>
+
+          <!-- Section: Cari Pasien (Section 11) -->
+          <div class="card-clean mb-4">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-search me-2 text-success"></i>Cari Pasien Terdaftar</h6>
+            </div>
+            <div class="card-clean-body">
+              <div class="row g-2 align-items-center mb-3">
+                <div class="col-md-9">
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person-search"></i></span>
+                    <input type="text" class="form-control border-start-0 ps-0" id="regPatientSearchInput" placeholder="Nama / No. RM" onkeyup="if(event.key==='Enter') searchRegistrationPatients()">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-primary w-100" onclick="searchRegistrationPatients()">
+                    CARI
+                  </button>
+                </div>
+              </div>
+
+              <!-- Search Results Display (Section 11) -->
+              <div class="border rounded-2 overflow-hidden">
+                <div class="table-responsive">
+                  <table class="table-clean mb-0">
+                    <thead>
+                      <tr>
+                        <th>No. RM</th>
+                        <th>Nama Pasien</th>
+                        <th>Tgl Lahir</th>
+                        <th class="text-end">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="regPatientSearchResults">
+                      <tr>
+                        <td><span class="badge bg-light text-dark border font-monospace">RM0001</span></td>
+                        <td class="fw-bold">Andi Saputra</td>
+                        <td class="text-muted">12-05-1995</td>
+                        <td class="text-end">
+                          <button type="button" class="btn btn-sm btn-primary-clinic" onclick="selectPatientForVisit('RM0001')">
+                            <i class="bi bi-check2"></i> PILIH
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><span class="badge bg-light text-dark border font-monospace">RM0002</span></td>
+                        <td class="fw-bold">Budi Santoso</td>
+                        <td class="text-muted">15-01-2000</td>
+                        <td class="text-end">
+                          <button type="button" class="btn btn-sm btn-primary-clinic" onclick="selectPatientForVisit('RM0002')">
+                            <i class="bi bi-check2"></i> PILIH
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 12: FORM PENDAFTARAN KUNJUNGAN (Tampil saat klik PILIH) -->
+          <div id="visitRegistrationCard" class="card-clean border-start border-4 border-success d-none">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-journal-medical me-2 text-success"></i>Formulir Pendaftaran Kunjungan</h6>
+              <span class="badge bg-success-subtle text-success">Pasien Terpilih</span>
+            </div>
+            <div class="card-clean-body">
+              <!-- Patient Information Header -->
+              <div class="p-3 mb-4 rounded-3 bg-light border">
+                <div class="row g-2 align-items-center">
+                  <div class="col-sm-3">
+                    <div class="text-xs text-muted text-uppercase fw-bold">No. RM:</div>
+                    <div class="font-monospace fw-bold fs-6 text-dark" id="regSelectedRM">RM0001</div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="text-xs text-muted text-uppercase fw-bold">Nama:</div>
+                    <div class="fw-bold fs-6 text-dark" id="regSelectedNama">Andi Saputra</div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="text-xs text-muted text-uppercase fw-bold">Tanggal Lahir:</div>
+                    <div class="text-dark" id="regSelectedTglLahir">12-05-1995</div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="text-xs text-muted text-uppercase fw-bold">Jenis Kelamin:</div>
+                    <div class="text-dark" id="regSelectedGender">Laki-laki</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section: Data Kunjungan -->
+              <form id="visitRegForm" onsubmit="submitVisitRegistration(event)">
+                <div class="row g-3 mb-4">
+                  <div class="col-md-4">
+                    <label class="form-label small fw-medium">Tanggal Kunjungan</label>
+                    <input type="text" class="form-control" value="03/10/2026" readonly>
+                  </div>
+                  <div class="col-md-8">
+                    <label class="form-label small fw-medium">Jenis Kunjungan <span class="text-danger">*</span></label>
+                    <select class="form-select" required>
+                      <option value="Pemeriksaan Umum" selected>Pemeriksaan Umum</option>
+                      <option value="Poli Gigi">Poli Gigi & Mulut</option>
+                      <option value="KIA & Imunisasi">KIA & Imunisasi</option>
+                      <option value="Konsultasi Gizi">Konsultasi Gizi</option>
+                    </select>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label small fw-medium">Keluhan Awal <span class="text-danger">*</span></label>
+                    <textarea class="form-control" rows="3" placeholder="Masukkan keluhan yang dirasakan pasien saat datang..." required>Demam sejak 2 hari yang lalu dan batuk berdahak.</textarea>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('visitRegistrationCard').classList.add('d-none');">
+                    Batal
+                  </button>
+                  <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-clipboard2-check me-1"></i> DAFTARKAN
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 8: ANTREAN PASIEN (Section 13)
+             ===================================================================== -->
+        <section id="view-antrean" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Antrean Pasien</h4>
+              <p class="text-muted small mb-0"><i class="bi bi-calendar-event me-1"></i>03 Oktober 2026</p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-light-clinic btn-sm" onclick="showToast('info', 'Data antrean diperbarui secara otomatis.')">
+                <i class="bi bi-arrow-clockwise me-1"></i> Refresh Antrean
+              </button>
+            </div>
+          </div>
+
+          <!-- Statistics Cards (Section 13) -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Menunggu</div>
+                  <div class="stat-value text-warning">8</div>
+                  <div class="stat-sub text-muted">Dalam antrean ruang tunggu</div>
+                </div>
+                <div class="stat-icon stat-icon-amber">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Diperiksa</div>
+                  <div class="stat-value text-primary">1</div>
+                  <div class="stat-sub text-muted">Sedang di ruang dokter</div>
+                </div>
+                <div class="stat-icon stat-icon-blue">
+                  <i class="bi bi-heart-pulse"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Selesai</div>
+                  <div class="stat-value text-success">24</div>
+                  <div class="stat-sub text-muted">Telah menerima obat / selesai</div>
+                </div>
+                <div class="stat-icon stat-icon-green">
+                  <i class="bi bi-check2-all"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table Antrean -->
+          <div class="card-clean">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-list-ol me-2 text-success"></i>Tabel Antrean Hari Ini</h6>
+              <span class="badge bg-light text-muted border">Urutan Waktu Daftar</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table-clean">
+                <thead>
+                  <tr>
+                    <th>Antrean</th>
+                    <th>Pasien</th>
+                    <th>Jam Daftar</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="antreanTableBody">
+                  <!-- Populated by app.js renderAntreanTable() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 9: PEMERIKSAAN PASIEN & DYNAMIC RECOMMENDATIONS (Section 14-19)
+             ===================================================================== -->
+        <section id="view-pemeriksaan" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Pemeriksaan Pasien</h4>
+              <p class="text-muted small mb-0">Anamnesis, rekomendasi pemeriksaan dinamis, dan pencatatan tanda vital.</p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-secondary btn-sm" onclick="navigateTo('antrean')">
+                <i class="bi bi-arrow-left me-1"></i> Kembali ke Antrean
+              </button>
+            </div>
+          </div>
+
+          <!-- Section 14: PATIENT CARD -->
+          <div class="card-clean border-start border-4 border-success mb-4">
+            <div class="card-clean-body py-3 px-4">
+              <div class="row g-2 align-items-center">
+                <div class="col-sm-3">
+                  <div class="text-xs text-muted text-uppercase fw-bold">No. RM:</div>
+                  <div class="font-monospace fw-bold text-dark fs-6" id="examPatientRM">RM0001</div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="text-xs text-muted text-uppercase fw-bold">Nama:</div>
+                  <div class="fw-bold text-dark fs-6" id="examPatientNama">Andi Saputra</div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="text-xs text-muted text-uppercase fw-bold">Tanggal Lahir:</div>
+                  <div class="text-dark" id="examPatientTglLahir">12-05-1995</div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="text-xs text-muted text-uppercase fw-bold">Jenis Kelamin:</div>
+                  <div class="text-dark" id="examPatientGender">Laki-laki</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 15 & 16: KELUHAN UTAMA & DYNAMIC RECOMMENDATION UI -->
+          <div class="card-clean mb-4">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-chat-heart me-2 text-success"></i>Anamnesis & Keluhan Utama</h6>
+              <span class="badge bg-light text-muted border">Asisten Pemeriksaan Otomatis</span>
+            </div>
+            <div class="card-clean-body">
+              <label for="keluhanUtamaInput" class="form-label small fw-medium">Keluhan Utama</label>
+              <textarea 
+                class="form-control" 
+                id="keluhanUtamaInput" 
+                rows="3" 
+                placeholder="Ketik keluhan pasien... (contoh: demam, demam dan batuk, atau sakit kepala dan mual)"
+              ></textarea>
+              
+              <!-- Quick Chips for Testing Keywords -->
+              <div class="mt-2 d-flex flex-wrap align-items-center gap-1">
+                <span class="text-xs text-muted me-1">Uji Cepat Kata Kunci:</span>
+                <span class="quick-chip" onclick="appendComplaintTag('demam')">+ Demam</span>
+                <span class="quick-chip" onclick="appendComplaintTag('batuk')">+ Batuk</span>
+                <span class="quick-chip" onclick="appendComplaintTag('sakit kepala')">+ Sakit kepala</span>
+                <span class="quick-chip" onclick="appendComplaintTag('mual')">+ Mual</span>
+                <span class="quick-chip" onclick="appendComplaintTag('diare')">+ Diare</span>
+                <span class="quick-chip" onclick="appendComplaintTag('nyeri perut')">+ Nyeri perut</span>
+                <button type="button" class="btn btn-sm btn-link text-xs p-0 ms-2 text-decoration-none" onclick="setComplaintText('Pasien mengeluh demam dan batuk')">Contoh 1</button>
+                <button type="button" class="btn btn-sm btn-link text-xs p-0 ms-2 text-decoration-none" onclick="setComplaintText('Pasien mengeluh sakit kepala dan mual')">Contoh 2</button>
+                <button type="button" class="btn btn-sm btn-link text-xs p-0 ms-2 text-danger text-decoration-none" onclick="setComplaintText('')">Bersihkan</button>
+              </div>
+
+              <!-- Section 16 & 17: Dynamic Recommendation Output Container -->
+              <div id="recommendationContainer">
+                <!-- Injected and updated in real-time by recommendation.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 18: TANDA-TANDA VITAL UI -->
+          <div class="card-clean mb-4">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-activity me-2 text-success"></i>Tanda-Tanda Vital</h6>
+              <span class="badge bg-light text-muted border">Pemeriksaan Fisik</span>
+            </div>
+            <div class="card-clean-body">
+              <div class="row g-3">
+                <div class="col-md-4 col-sm-6">
+                  <label class="form-label small fw-medium">Tekanan Darah</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" value="120/80">
+                    <span class="input-group-text bg-light text-muted small">mmHg</span>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6">
+                  <label class="form-label small fw-medium">Suhu Tubuh</label>
+                  <div class="input-group">
+                    <input type="number" step="0.1" class="form-control" value="36.5">
+                    <span class="input-group-text bg-light text-muted small">&deg;C</span>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6">
+                  <label class="form-label small fw-medium">Berat Badan</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" value="65">
+                    <span class="input-group-text bg-light text-muted small">kg</span>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6">
+                  <label class="form-label small fw-medium">Tinggi Badan</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" value="170">
+                    <span class="input-group-text bg-light text-muted small">cm</span>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6">
+                  <label class="form-label small fw-medium">Denyut Nadi</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" value="80">
+                    <span class="input-group-text bg-light text-muted small">bpm</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 19: CATATAN PEMERIKSAAN UI -->
+          <div class="card-clean mb-4">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-pen me-2 text-success"></i>Catatan Pemeriksaan</h6>
+            </div>
+            <div class="card-clean-body">
+              <label for="catatanPemeriksaanTextarea" class="form-label small fw-medium">Hasil Pemeriksaan & Catatan Klinis</label>
+              <textarea class="form-control" id="catatanPemeriksaanTextarea" rows="3" placeholder="Masukkan catatan hasil pemeriksaan..."></textarea>
+            </div>
+          </div>
+
+          <!-- Actions: SIMPAN PEMERIKSAAN / BATAL -->
+          <div class="d-flex justify-content-end gap-2 mb-5">
+            <button type="button" class="btn btn-outline-secondary" onclick="navigateTo('antrean')">
+              BATAL
+            </button>
+            <button type="button" class="btn btn-primary px-4" onclick="saveExamination()">
+              <i class="bi bi-save me-1"></i> SIMPAN PEMERIKSAAN
+            </button>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 10: DATA KUNJUNGAN UI (Section 20)
+             ===================================================================== -->
+        <section id="view-kunjungan" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Data Kunjungan</h4>
+              <p class="text-muted small mb-0">Arsip riwayat kunjungan pasien klinik.</p>
+            </div>
+            <div>
+              <button class="btn btn-light-clinic btn-sm" onclick="showToast('info', 'Mengekspor data kunjungan (Demo UI)')">
+                <i class="bi bi-download me-1"></i> Unduh Data
+              </button>
+            </div>
+          </div>
+
+          <!-- Filters (Section 20) -->
+          <div class="card-clean mb-4">
+            <div class="card-clean-body">
+              <div class="row g-2 align-items-end">
+                <div class="col-md-3 col-sm-6">
+                  <label class="form-label text-xs fw-medium text-muted">Tanggal Mulai</label>
+                  <input type="date" class="form-control form-control-sm" value="2026-10-01">
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label class="form-label text-xs fw-medium text-muted">Tanggal Akhir</label>
+                  <input type="date" class="form-control form-control-sm" value="2026-10-03">
+                </div>
+                <div class="col-md-2 col-sm-6">
+                  <label class="form-label text-xs fw-medium text-muted">Status</label>
+                  <select class="form-select form-select-sm">
+                    <option value="">Semua Status</option>
+                    <option value="Selesai">Selesai</option>
+                    <option value="Menunggu">Menunggu</option>
+                    <option value="Diperiksa">Diperiksa</option>
+                  </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label class="form-label text-xs fw-medium text-muted">Search Pasien / No. RM</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Nama atau No. RM...">
+                </div>
+                <div class="col-md-1 col-sm-12">
+                  <button type="button" class="btn btn-primary btn-sm w-100" onclick="showToast('info', 'Filter data kunjungan diterapkan.')">
+                    FILTER
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table Kunjungan -->
+          <div class="card-clean">
+            <div class="table-responsive">
+              <table class="table-clean">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>No. RM</th>
+                    <th>Pasien</th>
+                    <th>Keluhan</th>
+                    <th>Status</th>
+                    <th class="text-end">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="font-monospace text-muted">03/10/2026</td>
+                    <td><span class="badge bg-light text-dark border font-monospace">RM0001</span></td>
+                    <td class="fw-bold">Andi Saputra</td>
+                    <td>Kontrol rutin hipertensi & flu ringan</td>
+                    <td><span class="badge-status badge-status-selesai"><i class="bi bi-check-circle"></i> Selesai</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border py-0 px-2" onclick="showToast('info', 'Membuka rekam medis kunjungan RM0001')">Detail</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-monospace text-muted">03/10/2026</td>
+                    <td><span class="badge bg-light text-dark border font-monospace">RM0002</span></td>
+                    <td class="fw-bold">Budi Santoso</td>
+                    <td>Demam tinggi 3 hari dan batuk berdahak</td>
+                    <td><span class="badge-status badge-status-menunggu"><i class="bi bi-clock"></i> Menunggu</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border py-0 px-2" onclick="showToast('info', 'Membuka rekam medis kunjungan RM0002')">Detail</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-monospace text-muted">03/10/2026</td>
+                    <td><span class="badge bg-light text-dark border font-monospace">RM0003</span></td>
+                    <td class="fw-bold">Siti Aminah</td>
+                    <td>Sakit kepala berdenyut disertai mual</td>
+                    <td><span class="badge-status badge-status-diperiksa"><i class="bi bi-heart-pulse"></i> Diperiksa</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border py-0 px-2" onclick="showToast('info', 'Membuka rekam medis kunjungan RM0003')">Detail</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-monospace text-muted">02/10/2026</td>
+                    <td><span class="badge bg-light text-dark border font-monospace">RM0004</span></td>
+                    <td class="fw-bold">Dewi Sartika</td>
+                    <td>Nyeri perut kanan bawah dan mual</td>
+                    <td><span class="badge-status badge-status-selesai"><i class="bi bi-check-circle"></i> Selesai</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border py-0 px-2" onclick="showToast('info', 'Membuka rekam medis kunjungan RM0004')">Detail</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-monospace text-muted">02/10/2026</td>
+                    <td><span class="badge bg-light text-dark border font-monospace">RM0005</span></td>
+                    <td class="fw-bold">Hendra Wijaya</td>
+                    <td>Diare akut 4 kali sejak kemarin</td>
+                    <td><span class="badge-status badge-status-selesai"><i class="bi bi-check-circle"></i> Selesai</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border py-0 px-2" onclick="showToast('info', 'Membuka rekam medis kunjungan RM0005')">Detail</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 11: LAPORAN UI (Section 21)
+             ===================================================================== -->
+        <section id="view-laporan" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Laporan Klinik</h4>
+              <p class="text-muted small mb-0">Statistik dan rekapitulasi data operasional klinik.</p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-danger btn-sm" onclick="showToast('info', 'Fitur Ekspor PDF (Demo UI)')">
+                <i class="bi bi-file-earmark-pdf me-1"></i> EXPORT PDF
+              </button>
+              <button class="btn btn-outline-success btn-sm" onclick="showToast('info', 'Fitur Ekspor Excel (Demo UI)')">
+                <i class="bi bi-file-earmark-excel me-1"></i> EXPORT EXCEL
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Section (Section 21) -->
+          <div class="card-clean mb-4">
+            <div class="card-clean-body">
+              <div class="row g-2 align-items-end">
+                <div class="col-md-3 col-sm-6">
+                  <label class="form-label text-xs fw-medium text-muted">Tanggal Mulai</label>
+                  <input type="date" class="form-control form-control-sm" value="2026-09-01">
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label class="form-label text-xs fw-medium text-muted">Tanggal Akhir</label>
+                  <input type="date" class="form-control form-control-sm" value="2026-10-03">
+                </div>
+                <div class="col-md-4 col-sm-8">
+                  <label class="form-label text-xs fw-medium text-muted">Jenis Laporan</label>
+                  <select class="form-select form-select-sm">
+                    <option value="kunjungan">Laporan Kunjungan Pasien Poli</option>
+                    <option value="penyakit">10 Besar Penyakit Terbanyak</option>
+                    <option value="antrean">Efisiensi Waktu Tunggu Antrean</option>
+                    <option value="demografi">Demografi Pasien Berdasarkan Usia & Gender</option>
+                  </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <button type="button" class="btn btn-primary btn-sm w-100" onclick="showToast('info', 'Data laporan diperbarui.')">
+                    <i class="bi bi-search me-1"></i> TAMPILKAN
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Cards (Section 21) -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Total Pasien</div>
+                  <div class="stat-value">250</div>
+                  <div class="stat-sub text-muted">Semua pasien klinik</div>
+                </div>
+                <div class="stat-icon stat-icon-green">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Total Kunjungan</div>
+                  <div class="stat-value">840</div>
+                  <div class="stat-sub text-muted">Tercatat sepanjang operasional</div>
+                </div>
+                <div class="stat-icon stat-icon-blue">
+                  <i class="bi bi-clipboard-pulse"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div>
+                  <div class="stat-label">Kunjungan Periode</div>
+                  <div class="stat-value text-success">120</div>
+                  <div class="stat-sub text-muted">01 Sep 2026 - 03 Okt 2026</div>
+                </div>
+                <div class="stat-icon stat-icon-amber">
+                  <i class="bi bi-calendar2-range"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dummy Chart: Grafik Kunjungan (Section 21) -->
+          <div class="card-clean">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-bar-chart-fill me-2 text-success"></i>Grafik Distribusi Kunjungan per Poli Layanan</h6>
+              <span class="badge bg-light text-muted border">Periode Berjalan</span>
+            </div>
+            <div class="card-clean-body">
+              <div style="height: 300px; position: relative;">
+                <canvas id="laporanChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 12: PENGGUNA UI (Section 22)
+             ===================================================================== -->
+        <section id="view-pengguna" class="view-section d-none">
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Pengguna Sistem</h4>
+              <p class="text-muted small mb-0">Manajemen akun staf klinik dan hak akses peran.</p>
+            </div>
+            <div>
+              <!-- Button: + Tambah Pengguna -->
+              <button class="btn btn-primary" onclick="navigateTo('pengguna-tambah')">
+                <i class="bi bi-person-plus-fill me-1"></i> + Tambah Pengguna
+              </button>
+            </div>
+          </div>
+
+          <div class="card-clean">
+            <div class="table-responsive">
+              <table class="table-clean">
+                <thead>
+                  <tr>
+                    <th>Nama Lengkap</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th class="text-end">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="fw-bold text-dark">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="user-avatar" style="width: 32px; height: 32px; font-size: 0.75rem;">AK</div>
+                        <span>Admin Klinik</span>
+                      </div>
+                    </td>
+                    <td class="font-monospace text-muted">admin</td>
+                    <td><a href="mailto:admin@klinik.test" class="text-muted">admin@klinik.test</a></td>
+                    <td><span class="badge bg-success text-white">OWNER</span></td>
+                    <td><span class="badge-status badge-status-selesai">Aktif</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border" onclick="showToast('info', 'Edit akun Admin Klinik (Demo UI)')">Edit</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold text-dark">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="user-avatar" style="width: 32px; height: 32px; font-size: 0.75rem;">SR</div>
+                        <span>Siti</span>
+                      </div>
+                    </td>
+                    <td class="font-monospace text-muted">siti</td>
+                    <td><a href="mailto:siti@klinik.test" class="text-muted">siti@klinik.test</a></td>
+                    <td><span class="badge bg-primary text-white">RESEPSIONIS</span></td>
+                    <td><span class="badge-status badge-status-selesai">Aktif</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border" onclick="showToast('info', 'Edit akun Siti (Demo UI)')">Edit</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold text-dark">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="user-avatar" style="width: 32px; height: 32px; font-size: 0.75rem;">AP</div>
+                        <span>Andi</span>
+                      </div>
+                    </td>
+                    <td class="font-monospace text-muted">andi</td>
+                    <td><a href="mailto:andi@klinik.test" class="text-muted">andi@klinik.test</a></td>
+                    <td><span class="badge bg-info text-white">PERAWAT</span></td>
+                    <td><span class="badge-status badge-status-selesai">Aktif</span></td>
+                    <td class="text-end">
+                      <button class="btn btn-sm btn-light border" onclick="showToast('info', 'Edit akun Andi (Demo UI)')">Edit</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 13: TAMBAH PENGGUNA UI (Section 23)
+             ===================================================================== -->
+        <section id="view-pengguna-tambah" class="view-section d-none">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Tambah Pengguna</h4>
+              <p class="text-muted small mb-0">Daftarkan akun staf baru untuk mengakses sistem.</p>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" onclick="navigateTo('pengguna')">
+              <i class="bi bi-arrow-left me-1"></i> Kembali
+            </button>
+          </div>
+
+          <div class="card-clean" style="max-width: 800px;">
+            <div class="card-clean-header">
+              <h6 class="fw-bold"><i class="bi bi-person-fill-add me-2 text-success"></i>Formulir Data Akun</h6>
+            </div>
+            <div class="card-clean-body">
+              <form id="tambahPenggunaForm" onsubmit="event.preventDefault(); showToast('success', 'Akun pengguna baru berhasil disimpan.'); navigateTo('pengguna');">
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Nama Lengkap <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Contoh: dr. Sarah Sp.PD" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Username <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control font-monospace" placeholder="sarah_dokter" required>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label small fw-medium">Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" placeholder="nama@klinik.test" required>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Password <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" placeholder="Minimal 8 karakter" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Konfirmasi Password <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" placeholder="Ulangi password" required>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Role <span class="text-danger">*</span></label>
+                    <select class="form-select" required>
+                      <option value="RESEPSIONIS">RESEPSIONIS</option>
+                      <option value="PERAWAT">PERAWAT</option>
+                      <option value="OWNER">OWNER</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label small fw-medium">Status <span class="text-danger">*</span></label>
+                    <select class="form-select" required>
+                      <option value="Aktif">Aktif</option>
+                      <option value="Nonaktif">Nonaktif</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-outline-secondary" onclick="navigateTo('pengguna')">
+                    Batal
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Simpan
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 14: EMPTY STATES SHOWCASE (Section 26)
+             ===================================================================== -->
+        <section id="view-empty-states" class="view-section d-none">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Tampilan Kosong (Empty States)</h4>
+              <p class="text-muted small mb-0">Desain visual saat entitas belum memiliki data.</p>
+            </div>
+          </div>
+
+          <div class="row g-4">
+            <!-- No Patients -->
+            <div class="col-md-6">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold">Kasus 1: Belum Ada Data Pasien</h6>
+                </div>
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="empty-state-title">Belum Ada Data Pasien</div>
+                  <div class="empty-state-desc">Belum ada pasien yang didaftarkan ke sistem klinik. Mulai registrasi pasien perdana sekarang.</div>
+                  <button class="btn btn-primary btn-sm" onclick="navigateTo('pasien-tambah')">
+                    <i class="bi bi-person-plus me-1"></i> Registrasi Pasien Baru
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- No Queue -->
+            <div class="col-md-6">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold">Kasus 2: Antrean Kosong</h6>
+                </div>
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">
+                    <i class="bi bi-list-check"></i>
+                  </div>
+                  <div class="empty-state-title">Antrean Kosong</div>
+                  <div class="empty-state-desc">Tidak ada pasien yang sedang menunggu giliran pemeriksaan hari ini.</div>
+                  <button class="btn btn-outline-primary btn-sm" onclick="navigateTo('pendaftaran')">
+                    <i class="bi bi-plus-circle me-1"></i> Daftarkan Kunjungan Baru
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- No Visits -->
+            <div class="col-md-6">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold">Kasus 3: Belum Ada Kunjungan</h6>
+                </div>
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">
+                    <i class="bi bi-calendar-x"></i>
+                  </div>
+                  <div class="empty-state-title">Belum Ada Kunjungan</div>
+                  <div class="empty-state-desc">Belum ada catatan riwayat kunjungan medis untuk periode yang Anda pilih.</div>
+                  <button class="btn btn-light-clinic btn-sm" onclick="showToast('info', 'Menyesuaikan rentang filter tanggal')">
+                    <i class="bi bi-filter me-1"></i> Ubah Rentang Tanggal
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search Not Found -->
+            <div class="col-md-6">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold">Kasus 4: Data Tidak Ditemukan</h6>
+                </div>
+                <div class="empty-state-card">
+                  <div class="empty-state-icon">
+                    <i class="bi bi-search"></i>
+                  </div>
+                  <div class="empty-state-title">Data Tidak Ditemukan</div>
+                  <div class="empty-state-desc">Pencarian tidak membuahkan hasil. Silakan periksa kembali ejaan nama atau nomor RM yang dicari.</div>
+                  <button class="btn btn-outline-secondary btn-sm" onclick="navigateTo('pasien')">
+                    <i class="bi bi-arrow-left me-1"></i> Kembali ke Data Pasien
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 15: DEMO MODALS & TOASTS SHOWCASE (Section 24 & 25)
+             ===================================================================== -->
+        <section id="view-demo-showcase" class="view-section d-none">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+              <h4 class="fw-bold mb-1">Komponen Dialog & Notifikasi</h4>
+              <p class="text-muted small mb-0">Uji coba interaktif modal konfirmasi dan toast status.</p>
+            </div>
+          </div>
+
+          <div class="row g-4 mb-4">
+            <!-- Modals Trigger Box -->
+            <div class="col-md-6">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold"><i class="bi bi-window-stack me-2 text-success"></i>Showcase Modal (Section 24)</h6>
+                </div>
+                <div class="card-clean-body">
+                  <p class="text-muted small mb-3">Klik tombol di bawah untuk membuka modal interaktif Bootstrap 5:</p>
+                  
+                  <div class="d-flex flex-column gap-2">
+                    <button class="btn btn-outline-danger text-start justify-content-between" onclick="openDeleteModal('RM0001', 'Andi Saputra')">
+                      <span><i class="bi bi-trash me-2"></i> Modal Konfirmasi Hapus Data</span>
+                      <i class="bi bi-arrow-right"></i>
+                    </button>
+
+                    <button class="btn btn-outline-success text-start justify-content-between" data-bs-toggle="modal" data-bs-target="#actionSuccessModal">
+                      <span><i class="bi bi-check-circle me-2"></i> Modal Berhasil Simpan</span>
+                      <i class="bi bi-arrow-right"></i>
+                    </button>
+
+                    <button class="btn btn-outline-primary text-start justify-content-between" onclick="document.getElementById('modalQueueNumber').textContent='A005'; document.getElementById('modalPatientName').textContent='Andi Saputra'; new bootstrap.Modal(document.getElementById('registrationSuccessModal')).show();">
+                      <span><i class="bi bi-card-checklist me-2"></i> Modal Pendaftaran Berhasil (Nomor Antrean)</span>
+                      <i class="bi bi-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Toasts Trigger Box -->
+            <div class="col-md-6">
+              <div class="card-clean h-100">
+                <div class="card-clean-header">
+                  <h6 class="fw-bold"><i class="bi bi-bell-fill me-2 text-success"></i>Showcase Toast Notifikasi (Section 25)</h6>
+                </div>
+                <div class="card-clean-body">
+                  <p class="text-muted small mb-3">Klik tombol untuk memicu notifikasi toast mengambang:</p>
+
+                  <div class="d-flex flex-column gap-2">
+                    <button class="btn btn-outline-success text-start justify-content-between" onclick="showToast('success', '✓ Data berhasil disimpan.')">
+                      <span><i class="bi bi-check-circle-fill text-success me-2"></i> Toast Success (✓ Data berhasil disimpan.)</span>
+                      <i class="bi bi-send"></i>
+                    </button>
+
+                    <button class="btn btn-outline-danger text-start justify-content-between" onclick="showToast('error', '✕ Terjadi kesalahan pada validasi form.')">
+                      <span><i class="bi bi-x-circle-fill text-danger me-2"></i> Toast Error (✕ Terjadi kesalahan.)</span>
+                      <i class="bi bi-send"></i>
+                    </button>
+
+                    <button class="btn btn-outline-warning text-start justify-content-between" onclick="showToast('warning', '! Data belum lengkap, mohon periksa bidang wajib.')">
+                      <span><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i> Toast Warning (! Data belum lengkap.)</span>
+                      <i class="bi bi-send"></i>
+                    </button>
+
+                    <button class="btn btn-outline-primary text-start justify-content-between" onclick="showToast('info', 'ℹ Data sedang diproses oleh sistem...')">
+                      <span><i class="bi bi-info-circle-fill text-primary me-2"></i> Toast Info (ℹ Data sedang diproses.)</span>
+                      <i class="bi bi-send"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       3. REUSABLE BOOTSTRAP MODALS (Section 24)
+       ========================================================================= -->
+
+  <!-- Modal 1: Delete Confirmation -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom-0 pb-0">
+          <div class="d-flex align-items-center gap-2">
+            <div class="stat-icon bg-danger-subtle text-danger" style="width: 36px; height: 36px; font-size: 1.1rem;">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <h5 class="modal-title fw-bold text-danger" id="deleteConfirmModalLabel">Hapus Data?</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-3">
+          <p class="text-muted mb-2">Apakah Anda yakin ingin menghapus data ini?</p>
+          <div class="p-2 bg-light rounded text-xs font-monospace text-dark" id="deleteTargetName">
+            Andi Saputra (RM0001)
+          </div>
+          <div class="mt-2 text-xs text-secondary">
+            Tindakan ini hanya merupakan demonstrasi frontend UI.
+          </div>
+        </div>
+        <div class="modal-footer border-top-0 pt-0">
+          <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger" onclick="confirmDeletePatient()">Hapus</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Success Modal -->
+  <div class="modal fade" id="actionSuccessModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content border-0 shadow text-center p-3">
+        <div class="modal-body">
+          <div class="stat-icon stat-icon-green mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.8rem;">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">Berhasil</h5>
+          <p class="text-muted small mb-4">Data berhasil disimpan.</p>
+          <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Registration Success Modal (Section 12 & 24) -->
+  <div class="modal fade" id="registrationSuccessModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-success text-white py-3">
+          <h6 class="modal-title fw-bold mb-0">
+            <i class="bi bi-check2-circle me-1"></i> Pendaftaran Berhasil
+          </h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4 text-center">
+          <div class="text-xs text-uppercase fw-bold text-muted mb-1">Nomor Antrean:</div>
+          <div class="display-3 fw-bold font-monospace text-success mb-2" id="modalQueueNumber">A005</div>
+          
+          <div class="p-3 bg-light rounded-3 border mb-3">
+            <div class="text-xs text-muted">Pasien:</div>
+            <div class="fw-bold text-dark fs-5" id="modalPatientName">Andi Saputra</div>
+            <div class="text-xs text-muted mt-1">Poli Umum &bull; Tanggal: 03/10/2026</div>
+          </div>
+
+          <p class="text-muted small mb-0">
+            Silakan cetak struk antrean atau arahkan pasien menuju ruang tunggu klinik.
+          </p>
+        </div>
+        <div class="modal-footer border-top justify-content-center">
+          <button type="button" class="btn btn-outline-secondary btn-sm" onclick="showToast('info', 'Mencetak struk antrean (Demo UI)')">
+            <i class="bi bi-printer me-1"></i> Cetak Struk
+          </button>
+          <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal" onclick="navigateTo('antrean')">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       4. GLOBAL TOAST CONTAINER (Section 25)
+       ========================================================================= -->
+  <div id="globalToastContainer" class="toast-container-custom d-flex flex-column gap-2" aria-live="polite" aria-atomic="true">
+    <!-- Toasts dynamically appended via app.js showToast() -->
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Modular Scripts as required by Prompt Section 29 -->
+  <script src="recommendation.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Owner - Sistem Informasi Klinik</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../assets/css/clinic.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="bi bi-hospital"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <div class="sidebar-brand-name">KLINIK SEHAT MEDIKA</div>
+          <div class="sidebar-brand-subtitle">Sistem Informasi Klinik</div>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="sidebar-section-title">Menu Utama</div>
+        
+        <a href="dashboard.html" class="sidebar-nav-item active">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="pasien.html" class="sidebar-nav-item">
+          <i class="bi bi-people"></i>
+          <span>Data Pasien</span>
+        </a>
+        <a href="kunjungan.html" class="sidebar-nav-item">
+          <i class="bi bi-clipboard2-pulse"></i>
+          <span>Data Kunjungan</span>
+        </a>
+        <a href="laporan.html" class="sidebar-nav-item">
+          <i class="bi bi-file-earmark-bar-graph"></i>
+          <span>Laporan</span>
+        </a>
+        <a href="pengguna.html" class="sidebar-nav-item">
+          <i class="bi bi-person-gear"></i>
+          <span>Pengguna</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <button type="button" class="btn btn-logout" onclick="Auth.logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTAINER -->
+    <div class="app-main">
+      
+      <!-- TOPBAR -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button type="button" class="sidebar-toggle-btn js-sidebar-toggle d-lg-none" aria-label="Toggle Navigation">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="page-breadcrumb-wrap">
+            <h1 class="page-main-title">Dashboard Owner</h1>
+            <p class="breadcrumb-sub">Ringkasan aktivitas klinik hari ini.</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Quick Role Switcher for Demo -->
+          <div class="role-badge-switch d-none d-md-flex" title="Ganti Role untuk Evaluasi">
+            <button class="role-badge-btn active" onclick="Auth.loginAsRole('OWNER')">Owner</button>
+            <button class="role-badge-btn" onclick="Auth.loginAsRole('RESEPSIONIS')">Resepsionis</button>
+            <button class="role-badge-btn" onclick="Auth.loginAsRole('PERAWAT')">Perawat</button>
+          </div>
+
+          <!-- Notification -->
+          <div class="dropdown">
+            <button class="notification-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifikasi">
+              <i class="bi bi-bell"></i>
+              <span class="notification-badge"></span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end shadow-sm border p-2" style="width: 280px;">
+              <h6 class="dropdown-header px-2 py-1 text-uppercase small fw-bold">Notifikasi Hari Ini</h6>
+              <div class="list-group list-group-flush small">
+                <div class="list-group-item px-2 py-2 border-0">
+                  <div class="fw-semibold text-dark">5 Pasien Baru Terdaftar</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">15 menit yang lalu</div>
+                </div>
+                <div class="list-group-item px-2 py-2 border-0">
+                  <div class="fw-semibold text-dark">Laporan Bulanan Siap Ditinjau</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">1 jam yang lalu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Avatar & Dropdown -->
+          <div class="dropdown">
+            <button class="user-profile-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="user-avatar js-user-avatar">HP</div>
+              <div class="user-info-text d-none d-sm-block">
+                <div class="user-name js-user-name">dr. Hendra Pratama, Sp.A</div>
+                <div class="user-role-badge">OWNER <i class="bi bi-chevron-down ms-1 small"></i></div>
+              </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border">
+              <li class="dropdown-header">
+                <strong class="d-block text-dark js-user-name">dr. Hendra Pratama, Sp.A</strong>
+                <span class="small text-muted js-user-role">OWNER</span>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#modalProfil" data-bs-toggle="modal"><i class="bi bi-person me-2"></i> Profil</a></li>
+              <li><a class="dropdown-item" href="#modalPengaturan" data-bs-toggle="modal"><i class="bi bi-gear me-2"></i> Pengaturan</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item text-danger" onclick="Auth.logout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</button></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <main class="app-content">
+        
+        <!-- STATS CARDS -->
+        <div class="row g-3 mb-4">
+          <!-- CARD 1: Total Pasien -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Total Pasien</div>
+                <div class="stat-value" id="statTotalPasien">250</div>
+              </div>
+              <div class="stat-icon primary">
+                <i class="bi bi-people-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 2: Total Kunjungan -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Total Kunjungan</div>
+                <div class="stat-value" id="statTotalKunjungan">840</div>
+              </div>
+              <div class="stat-icon info">
+                <i class="bi bi-calendar2-check-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 3: Kunjungan Hari Ini -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Kunjungan Hari Ini</div>
+                <div class="stat-value text-success" id="statKunjunganHariIni">35</div>
+              </div>
+              <div class="stat-icon warning">
+                <i class="bi bi-clipboard2-pulse-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 4: Pengguna Aktif -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="stat-card">
+              <div>
+                <div class="stat-label">Pengguna Aktif</div>
+                <div class="stat-value" id="statPenggunaAktif">8</div>
+              </div>
+              <div class="stat-icon danger">
+                <i class="bi bi-shield-lock-fill"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          
+          <!-- CHART: Kunjungan 7 Hari Terakhir -->
+          <div class="col-12 col-xl-5">
+            <div class="card h-100 mb-0">
+              <div class="card-header">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-bar-chart-line-fill text-success"></i>
+                  <span>Kunjungan 7 Hari Terakhir</span>
+                </div>
+                <span class="badge bg-light text-secondary border">Minggu Ini</span>
+              </div>
+              <div class="card-body">
+                <div style="height: 280px; position: relative;">
+                  <canvas id="kunjungan7HariChart"></canvas>
+                </div>
+                <div class="d-flex justify-content-around mt-3 pt-2 border-top text-center">
+                  <div>
+                    <small class="text-muted d-block">Rata-rata Harian</small>
+                    <span class="fw-bold text-dark">32 Pasien</span>
+                  </div>
+                  <div>
+                    <small class="text-muted d-block">Hari Puncak</small>
+                    <span class="fw-bold text-success">Senin (42)</span>
+                  </div>
+                  <div>
+                    <small class="text-muted d-block">Tingkat Layanan</small>
+                    <span class="fw-bold text-primary">98.5%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE: Kunjungan Hari Ini -->
+          <div class="col-12 col-xl-7">
+            <div class="card h-100 mb-0">
+              <div class="card-header">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-clock-history text-success"></i>
+                  <span>Kunjungan Hari Ini</span>
+                </div>
+                <a href="kunjungan.html" class="btn btn-sm btn-outline-primary">
+                  Lihat Semua Kunjungan <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive border-0">
+                  <table class="table table-custom">
+                    <thead>
+                      <tr>
+                        <th style="width: 60px;">No</th>
+                        <th>Pasien</th>
+                        <th>No. RM</th>
+                        <th>Jam</th>
+                        <th>Status</th>
+                        <th class="text-end">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tableKunjunganBody">
+                      <tr>
+                        <td>01</td>
+                        <td>
+                          <div class="fw-semibold">Andi Saputra</div>
+                          <div class="text-muted small">Umum</div>
+                        </td>
+                        <td><code>RM0001</code></td>
+                        <td>09:00</td>
+                        <td><span class="badge-status badge-status-selesai"><i class="bi bi-check2"></i> Selesai</span></td>
+                        <td class="text-end">
+                          <a href="kunjungan-detail.html?id=KNJ-20261003-001" class="btn btn-sm btn-light border text-primary">
+                            <i class="bi bi-eye"></i> Detail
+                          </a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>02</td>
+                        <td>
+                          <div class="fw-semibold">Budi Santoso</div>
+                          <div class="text-muted small">Umum</div>
+                        </td>
+                        <td><code>RM0002</code></td>
+                        <td>09:15</td>
+                        <td><span class="badge-status badge-status-menunggu"><i class="bi bi-clock"></i> Menunggu</span></td>
+                        <td class="text-end">
+                          <a href="kunjungan-detail.html?id=KNJ-20261003-002" class="btn btn-sm btn-light border text-primary">
+                            <i class="bi bi-eye"></i> Detail
+                          </a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>03</td>
+                        <td>
+                          <div class="fw-semibold">Siti Aminah</div>
+                          <div class="text-muted small">Umum</div>
+                        </td>
+                        <td><code>RM0003</code></td>
+                        <td>09:30</td>
+                        <td><span class="badge-status badge-status-diperiksa"><i class="bi bi-hourglass-split"></i> Diperiksa</span></td>
+                        <td class="text-end">
+                          <a href="kunjungan-detail.html?id=KNJ-20261003-003" class="btn btn-sm btn-light border text-primary">
+                            <i class="bi bi-eye"></i> Detail
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-top p-3 text-center">
+                <a href="kunjungan.html" class="btn btn-light-green w-100">
+                  <i class="bi bi-list-ul me-1"></i> Lihat Semua Kunjungan
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Reusable Profil Modal -->
+  <div class="modal fade" id="modalProfil" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold"><i class="bi bi-person-circle text-success me-2"></i> Profil Pengguna</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <div class="user-avatar mx-auto mb-2" style="width: 64px; height: 64px; font-size: 1.5rem;">HP</div>
+            <h6 class="fw-bold mb-0">dr. Hendra Pratama, Sp.A</h6>
+            <span class="badge bg-success">OWNER KLINIK</span>
+          </div>
+          <table class="table table-sm border-0">
+            <tr>
+              <td class="text-muted" style="width: 120px;">Username</td>
+              <td class="fw-semibold">owner</td>
+            </tr>
+            <tr>
+              <td class="text-muted">Email</td>
+              <td class="fw-semibold">owner@klinik.id</td>
+            </tr>
+            <tr>
+              <td class="text-muted">SIP / Izin</td>
+              <td class="fw-semibold">SIP.440/1029/DKS/2022</td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reusable Pengaturan Modal -->
+  <div class="modal fade" id="modalPengaturan" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold"><i class="bi bi-gear-fill text-success me-2"></i> Pengaturan Sistem</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nama Klinik</label>
+            <input type="text" class="form-control" value="KLINIK SEHAT MEDIKA" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Alamat Klinik</label>
+            <input type="text" class="form-control" value="Jl. Kesehatan Utama No. 88, Jakarta" readonly>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" id="switchSuara" checked>
+            <label class="form-check-label" for="switchSuara">Panggilan Suara Otomatis</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Tutup</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="Clinic.showToast('success', 'Pengaturan berhasil diperbarui.')">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="../assets/js/data-store.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/clinic.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Role Guard
+      Auth.checkAuth(['OWNER']);
+
+      // Simple Chart: Kunjungan 7 Hari Terakhir
+      const ctx = document.getElementById('kunjungan7HariChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+          datasets: [{
+            label: 'Jumlah Kunjungan',
+            data: [42, 38, 35, 30, 39, 28, 18],
+            backgroundColor: '#198754',
+            borderRadius: 6,
+            barThickness: 24,
+            hoverBackgroundColor: '#146C43'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (context) => ` ${context.parsed.y} Kunjungan Pasien`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: '#EDF2F0' },
+              ticks: { stepSize: 10, color: '#6C757D' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#6C757D' }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

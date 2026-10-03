@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Pasien - Sistem Informasi Klinik</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="../assets/css/clinic.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <i class="bi bi-hospital"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          <div class="sidebar-brand-name">KLINIK SEHAT MEDIKA</div>
+          <div class="sidebar-brand-subtitle">Sistem Informasi Klinik</div>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="sidebar-section-title">Menu Utama</div>
+        
+        <a href="dashboard.html" class="sidebar-nav-item">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="pasien.html" class="sidebar-nav-item active">
+          <i class="bi bi-people"></i>
+          <span>Data Pasien</span>
+        </a>
+        <a href="kunjungan.html" class="sidebar-nav-item">
+          <i class="bi bi-clipboard2-pulse"></i>
+          <span>Data Kunjungan</span>
+        </a>
+        <a href="laporan.html" class="sidebar-nav-item">
+          <i class="bi bi-file-earmark-bar-graph"></i>
+          <span>Laporan</span>
+        </a>
+        <a href="pengguna.html" class="sidebar-nav-item">
+          <i class="bi bi-person-gear"></i>
+          <span>Pengguna</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <button type="button" class="btn btn-logout" onclick="Auth.logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTAINER -->
+    <div class="app-main">
+      
+      <!-- TOPBAR -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button type="button" class="sidebar-toggle-btn js-sidebar-toggle d-lg-none" aria-label="Toggle Navigation">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="page-breadcrumb-wrap">
+            <h1 class="page-main-title">Data Pasien</h1>
+            <p class="breadcrumb-sub">Master data pasien dan riwayat rekam medis.</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="role-badge-switch d-none d-md-flex">
+            <button class="role-badge-btn active" onclick="Auth.loginAsRole('OWNER')">Owner</button>
+            <button class="role-badge-btn" onclick="Auth.loginAsRole('RESEPSIONIS')">Resepsionis</button>
+            <button class="role-badge-btn" onclick="Auth.loginAsRole('PERAWAT')">Perawat</button>
+          </div>
+
+          <div class="dropdown">
+            <button class="user-profile-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="user-avatar js-user-avatar">HP</div>
+              <div class="user-info-text d-none d-sm-block">
+                <div class="user-name js-user-name">dr. Hendra Pratama, Sp.A</div>
+                <div class="user-role-badge">OWNER <i class="bi bi-chevron-down ms-1 small"></i></div>
+              </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border">
+              <li><button class="dropdown-item text-danger" onclick="Auth.logout()"><i class="bi bi-box-arrow-right me-2"></i> Logout</button></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <main class="app-content">
+
+        <!-- TOOLBAR -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row g-3 align-items-center justify-content-between">
+              
+              <!-- Search Bar -->
+              <div class="col-12 col-md-6 col-lg-5">
+                <form id="searchPatientForm" class="d-flex gap-2">
+                  <div class="input-group">
+                    <span class="input-group-text bg-white text-muted border-end-0">
+                      <i class="bi bi-search"></i>
+                    </span>
+                    <input 
+                      type="text" 
+                      id="searchPatientInput" 
+                      class="form-control border-start-0 ps-0" 
+                      placeholder="Cari nama / No. RM..."
+                      aria-label="Cari pasien"
+                    >
+                  </div>
+                  <button type="submit" class="btn btn-primary px-3">CARI</button>
+                  <button type="button" id="btnResetSearch" class="btn btn-outline-secondary d-none" title="Reset Pencarian">
+                    <i class="bi bi-x-lg"></i>
+                  </button>
+                </form>
+              </div>
+
+              <!-- Action Button for Owner & Resepsionis -->
+              <div class="col-12 col-md-auto text-md-end">
+                <a href="pasien-tambah.html" class="btn btn-primary">
+                  <i class="bi bi-person-plus-fill"></i>
+                  <span>+ Tambah Pasien</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- PATIENT TABLE CARD -->
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-people-fill text-success"></i>
+              <span>Daftar Pasien Terdaftar</span>
+            </div>
+            <span class="badge bg-light text-secondary border" id="patientTotalBadge">6 Pasien</span>
+          </div>
+
+          <div class="card-body p-0">
+            <div class="table-responsive border-0">
+              <table class="table table-custom mb-0">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">No</th>
+                    <th>No. RM</th>
+                    <th>Nama Pasien</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Tanggal Lahir</th>
+                    <th class="text-end" style="width: 100px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="patientTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Empty State Container -->
+            <div id="patientEmptyState" class="empty-state d-none">
+              <div class="empty-state-icon">
+                <i class="bi bi-person-slash"></i>
+              </div>
+              <h5 class="empty-state-title">Belum Ada Data Pasien</h5>
+              <p class="empty-state-desc">No patient records are available atau tidak ada data yang cocok dengan pencarian.</p>
+              <a href="pasien-tambah.html" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> + Tambah Pasien
+              </a>
+            </div>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="card-footer bg-white border-top p-3 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2" id="patientPaginationWrap">
+            <div class="small text-muted" id="paginationInfo">
+              Menampilkan 1 sampai 6 dari 6 entri
+            </div>
+            <nav aria-label="Navigasi Halaman Pasien">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled"><a class="page-link" href="#">Sebelumnya</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">Selanjutnya</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/data-store.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/clinic.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.checkAuth(['OWNER', 'RESEPSIONIS', 'PERAWAT']);
+
+      const tableBody = document.getElementById('patientTableBody');
+      const emptyState = document.getElementById('patientEmptyState');
+      const paginationWrap = document.getElementById('patientPaginationWrap');
+      const searchForm = document.getElementById('searchPatientForm');
+      const searchInput = document.getElementById('searchPatientInput');
+      const btnReset = document.getElementById('btnResetSearch');
+      const totalBadge = document.getElementById('patientTotalBadge');
+
+      function renderPatients(query = '') {
+        const allPatients = DataStore.getPatients();
+        let filtered = allPatients;
+
+        if (query) {
+          const q = query.toLowerCase().trim();
+          filtered = allPatients.filter(p => 
+            p.nama.toLowerCase().includes(q) ||
+            p.noRm.toLowerCase().includes(q)
+          );
+        }
+
+        totalBadge.textContent = `${filtered.length} Pasien`;
+
+        if (filtered.length === 0) {
+          tableBody.innerHTML = '';
+          emptyState.classList.remove('d-none');
+          paginationWrap.classList.add('d-none');
+          return;
+        }
+
+        emptyState.classList.add('d-none');
+        paginationWrap.classList.remove('d-none');
+
+        let rows = '';
+        filtered.forEach((p, idx) => {
+          const num = String(idx + 1).padStart(2, '0');
+          rows += `
+            <tr>
+              <td>${num}</td>
+              <td><code>${p.noRm}</code></td>
+              <td>
+                <div class="fw-semibold text-dark">${p.nama}</div>
+                <div class="small text-muted">${p.telepon || '-'}</div>
+              </td>
+              <td>
+                <span class="badge ${p.jenisKelamin === 'Laki-laki' ? 'bg-primary-subtle text-primary border border-primary-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'} rounded-pill px-2">
+                  ${p.jenisKelamin}
+                </span>
+              </td>
+              <td>${Clinic.formatIndoDate(p.tanggalLahir)}</td>
+              <td class="text-end">
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow-sm border">
+                    <li>
+                      <a class="dropdown-item" href="pasien-detail.html?rm=${p.noRm}">
+                        <i class="bi bi-eye text-primary me-2"></i> Detail Pasien
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="pasien-tambah.html?edit=${p.noRm}">
+                        <i class="bi bi-pencil-square text-warning me-2"></i> Edit Data
+                      </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <button class="dropdown-item text-danger js-delete-patient" data-rm="${p.noRm}" data-name="${p.nama}">
+                        <i class="bi bi-trash3 text-danger me-2"></i> Hapus Pasien
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        tableBody.innerHTML = rows;
+
+        // Attach delete handlers
+        document.querySelectorAll('.js-delete-patient').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const rm = btn.getAttribute('data-rm');
+            const name = btn.getAttribute('data-name');
+            Clinic.confirmDelete(`Apakah Anda yakin ingin menghapus data pasien ${name} (${rm})?`, () => {
+              DataStore.deletePatient(rm);
+              Clinic.showToast('success', `Pasien ${name} berhasil dihapus.`);
+              renderPatients(searchInput.value);
+            });
+          });
+        });
+      }
+
+      // Initial render
+      renderPatients();
+
+      // Search Handler
+      searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = searchInput.value.trim();
+        renderPatients(val);
+        btnReset.classList.toggle('d-none', !val);
+      });
+
+      btnReset.addEventListener('click', () => {
+        searchInput.value = '';
+        btnReset.classList.add('d-none');
+        renderPatients();
+      });
+    });
+  </script>
+</body>
+</html>
